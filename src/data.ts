@@ -82,7 +82,8 @@ export const PROJECTS: Project[] = [
       { label: "Google Gemini AI", type: "ai", details: "Generates context-aware, customized replies with flow history" },
       { label: "Facebook API Send", type: "action", details: "Instantly delivers reply back to customer chat" }
     ],
-    stack: ["n8n", "Google Gemini", "Webhooks", "HTTP Request", "Google Docs", "Facebook Graph API"]
+    stack: ["n8n", "Google Gemini", "Webhooks", "HTTP Request", "Google Docs", "Facebook Graph API"],
+    imageUrl: "/src/assets/images/fb_gemini_support_1780933170285.png"
   },
   {
     id: "ai-job-apply",
@@ -103,7 +104,8 @@ export const PROJECTS: Project[] = [
       { label: "OpenRouter LLM", type: "ai", details: "Rewrites resume bullet-points to match job description keywords" },
       { label: "Gmail Draft & Slack", type: "email", details: "Creates draft email with customized resume attachment" }
     ],
-    stack: ["n8n", "Slack App", "Google Drive", "OpenRouter", "Gmail API", "Structured JSON Parser"]
+    stack: ["n8n", "Slack App", "Google Drive", "OpenRouter", "Gmail API", "Structured JSON Parser"],
+    imageUrl: "/src/assets/images/ai_job_apply_1780933191481.png"
   },
   {
     id: "xero-asana-sync",
@@ -122,7 +124,8 @@ export const PROJECTS: Project[] = [
       { label: "Router Path A", type: "database", details: "Logs individual rows to Google Sheets bookkeeping" },
       { label: "Router Path B", type: "crm", details: "Compiles & formats PDF report and attaches it back to the Asana task" }
     ],
-    stack: ["Make", "Xero API", "Asana CRM", "Google Sheets", "Iterator Modules", "Data Aggregator"]
+    stack: ["Make", "Xero API", "Asana CRM", "Google Sheets", "Iterator Modules", "Data Aggregator"],
+    imageUrl: "/src/assets/images/xero_asana_sync_1780933212047.png"
   },
   {
     id: "gmail-sorter",
@@ -142,7 +145,8 @@ export const PROJECTS: Project[] = [
       { label: "Google Sheets Log", type: "database", details: "Registers timestamp, original sender, and file link" },
       { label: "Gmail Notification", type: "email", details: "Sends summary email with organized confirmation" }
     ],
-    stack: ["Make", "Gmail Trigger", "Google Sheets API", "Google Drive API", "OpenAI Vision/Text API"]
+    stack: ["Make", "Gmail Trigger", "Google Sheets API", "Google Drive API", "OpenAI Vision/Text API"],
+    imageUrl: "/src/assets/images/gmail_sorter_1780933228828.png"
   },
   {
     id: "content-repurpose",
@@ -163,7 +167,8 @@ export const PROJECTS: Project[] = [
       { label: "LinkedIn Update API", type: "action", details: "Shares optimized technical post on user profile" },
       { label: "Facebook Page API", type: "action", details: "Publishes conversational summary with image" }
     ],
-    stack: ["Zapier Paths", "Google Drive", "AI by Zapier", "LinkedIn API", "Facebook Pages Client"]
+    stack: ["Zapier Paths", "Google Drive", "AI by Zapier", "LinkedIn API", "Facebook Pages Client"],
+    imageUrl: "/src/assets/images/content_repurpose_1780933245104.png"
   },
   {
     id: "asana-crm-engagement",
@@ -183,7 +188,8 @@ export const PROJECTS: Project[] = [
       { label: "Zapier Delay Helper", type: "action", details: "Handles scheduled multi-day waiting periods cleanly" },
       { label: "Gmail Direct API", type: "email", details: "Dispatches automated follow-up proposal emails" }
     ],
-    stack: ["Zapier Premium", "Asana Webhooks", "Gmail SMTP", "Google Drive API", "Zapier Storage"]
+    stack: ["Zapier Premium", "Asana Webhooks", "Gmail SMTP", "Google Drive API", "Zapier Storage"],
+    imageUrl: "/src/assets/images/asana_crm_engagement_1780933260600.png"
   },
   {
     id: "lead-enrichment-pipeline",
@@ -203,7 +209,8 @@ export const PROJECTS: Project[] = [
       { label: "Slack / Sheets Notify", type: "notification", details: "Pings channel with summary and copies to Google Sheets" },
       { label: "AI Custom Outreach", type: "ai", details: "Writes draft Gmail response based on Apollo bio" }
     ],
-    stack: ["Zapier Router", "Youform", "Apollo.io API", "Slack API", "AI by Zapier", "Google Sheets"]
+    stack: ["Zapier Router", "Youform", "Apollo.io API", "Slack API", "AI by Zapier", "Google Sheets"],
+    imageUrl: "/src/assets/images/lead_enrichment_pipeline_1780933279283.png"
   }
 ];
 

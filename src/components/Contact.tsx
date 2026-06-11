@@ -11,7 +11,7 @@ interface Inquiry {
   id: string;
   name: string;
   email: string;
-  service: string;
+  subject: string;
   message: string;
   timestamp: string;
 }
@@ -21,7 +21,7 @@ export default function Contact({ darkMode }: ContactProps) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    service: 'Standard Workflow Automation',
+    subject: '',
     message: ''
   });
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
@@ -55,7 +55,7 @@ export default function Contact({ darkMode }: ContactProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) {
+    if (!formData.name || !formData.email || !formData.subject || !formData.message) {
       return;
     }
 
@@ -67,7 +67,7 @@ export default function Contact({ darkMode }: ContactProps) {
         id: Math.random().toString(36).substr(2, 9),
         name: formData.name,
         email: formData.email,
-        service: formData.service,
+        subject: formData.subject,
         message: formData.message,
         timestamp: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
       };
@@ -80,7 +80,7 @@ export default function Contact({ darkMode }: ContactProps) {
       setFormData({
         name: '',
         email: '',
-        service: 'Standard Workflow Automation',
+        subject: '',
         message: ''
       });
       setIsSubmitting(false);
@@ -246,7 +246,7 @@ export default function Contact({ darkMode }: ContactProps) {
                 <div className="flex items-center justify-between border-b pb-2 mb-2 border-neutral-800 text-neutral-400">
                   <span className="flex items-center gap-1">
                     <span className="h-1.5 w-1.5 rounded-none bg-brand-green inline-block animate-pulse"></span>
-                    Webhook Payload Terminal
+                    Contact Sandbox Terminal
                   </span>
                   <span className="text-[9px] uppercase tracking-wider">Inquiries queue</span>
                 </div>
@@ -260,9 +260,9 @@ export default function Contact({ darkMode }: ContactProps) {
                       >
                         <Trash2 size={12} />
                       </button>
-                      <p className="text-neutral-400 whitespace-nowrap"><span className="text-brand-light-green dark:text-brand-green">[{item.timestamp}]</span> Webhook verified.</p>
+                      <p className="text-neutral-400 whitespace-nowrap"><span className="text-brand-light-green dark:text-brand-green">[{item.timestamp}]</span> Inquiry verified.</p>
                       <p className="text-[11px] font-bold text-white mt-0.5 truncate">From: {item.name} ({item.email})</p>
-                      <p className="text-[11px] text-brand-green font-bold">Service: {item.service}</p>
+                      <p className="text-[11px] text-brand-green font-bold">Subject: {item.subject}</p>
                       <p className="text-[10px] text-neutral-300 line-clamp-2 italic ml-3 border-l pl-2 border-brand-green/20">"{item.message}"</p>
                     </div>
                   ))}
@@ -281,10 +281,10 @@ export default function Contact({ darkMode }: ContactProps) {
               {/* Form header message */}
               <div className="mb-6">
                 <h3 className="text-lg sm:text-xl font-display font-black uppercase text-black dark:text-white" id="form-heading-details">
-                  Send a Webhook Payload
+                  Get In Touch
                 </h3>
                 <p className="text-xs text-black font-semibold dark:text-neutral-400 mt-1">
-                  Map your operational requirements below to trigger a custom response pipeline.
+                  Please fill out the details below and I will get back to you shortly.
                 </p>
               </div>
 
@@ -301,10 +301,10 @@ export default function Contact({ darkMode }: ContactProps) {
                       className="p-4 bg-emerald-500/10 dark:bg-emerald-950/30 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs sm:text-sm rounded-none font-mono flex items-start space-x-3"
                       id="form-success-banner"
                     >
-                      <span className="p-1 rounded-none bg-emerald-500/20 font-bold">LOG_SUCCESS</span>
+                      <span className="p-1 rounded-none bg-emerald-500/20 font-bold">INFO_LOG</span>
                       <div className="min-w-0 flex-1">
-                        <p className="font-bold">Inquiry trigger compiled successfully!</p>
-                        <p className="text-neutral-500 dark:text-neutral-400 mt-0.5">Your parameters have been logged. I've stored this mock entry in the terminal log for inspection.</p>
+                        <p className="font-bold">Message sent successfully!</p>
+                        <p className="text-neutral-550 dark:text-neutral-400 mt-0.5">Your inquiry has been logged. You can review the entry in the Contact Sandbox Terminal log on the left.</p>
                       </div>
                     </motion.div>
                   )}
@@ -314,7 +314,7 @@ export default function Contact({ darkMode }: ContactProps) {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div className="space-y-1.5 flex flex-col">
                     <label htmlFor="name-input" className="text-[10px] font-mono uppercase tracking-wider text-neutral-400 dark:text-neutral-500 font-bold">
-                      Your Name / Company
+                      NAME/COMPANY
                     </label>
                     <input
                       required
@@ -334,7 +334,7 @@ export default function Contact({ darkMode }: ContactProps) {
 
                   <div className="space-y-1.5 flex flex-col">
                     <label htmlFor="email-input" className="text-[10px] font-mono uppercase tracking-wider text-neutral-400 dark:text-neutral-500 font-bold">
-                      Callback Email Address
+                      EMAIL
                     </label>
                     <input
                       required
@@ -353,41 +353,38 @@ export default function Contact({ darkMode }: ContactProps) {
                   </div>
                 </div>
 
-                {/* Dropdown selects Service category */}
+                {/* Input: Subject */}
                 <div className="space-y-1.5 flex flex-col">
-                  <label htmlFor="service-select" className="text-[10px] font-mono uppercase tracking-wider text-neutral-400 dark:text-neutral-500 font-bold">
-                    Target Pipeline Category
+                  <label htmlFor="subject-input" className="text-[10px] font-mono uppercase tracking-wider text-neutral-400 dark:text-neutral-500 font-bold">
+                    SUBJECT
                   </label>
-                  <select
-                    name="service"
-                    id="service-select"
-                    value={formData.service}
+                  <input
+                    required
+                    type="text"
+                    name="subject"
+                    id="subject-input"
+                    placeholder="eg. Automation Project Consultation"
+                    value={formData.subject}
                     onChange={handleInputChange}
                     className={`px-3.5 py-2.5 text-sm border font-mono rounded-none focus:outline-none focus:ring-1 focus:ring-brand-green focus:border-brand-green ${
                       darkMode 
-                        ? 'bg-neutral-950 border-[#2A2A2A] text-white' 
-                        : 'bg-white border-cream-border text-neutral-900'
+                        ? 'bg-neutral-950 border-[#2A2A2A] text-white placeholder-neutral-555' 
+                        : 'bg-white border-cream-border text-neutral-900 placeholder-neutral-400'
                     }`}
-                  >
-                    <option value="Workflow Automation">Workflow Automation (Zapier / Make / n8n)</option>
-                    <option value="AI Agent Chatbot">AI Agent & Chatbot Development</option>
-                    <option value="REST API Integration">REST API & Webhooks Integration</option>
-                    <option value="CRM Operations Pipeline">CRM Lead Pipeline Automation</option>
-                    <option value="Other Project Inquiry">Other Operational Consultations</option>
-                  </select>
+                  />
                 </div>
 
                 {/* Textarea: message */}
                 <div className="space-y-1.5 flex flex-col">
                   <label htmlFor="message-input" className="text-[10px] font-mono uppercase tracking-wider text-neutral-400 dark:text-neutral-500 font-bold">
-                    Operational Requirements Details
+                    MESSAGE
                   </label>
                   <textarea
                     required
                     name="message"
                     id="message-input"
                     rows={4}
-                    placeholder="Briefly map what tools you want to connect and what manual bottlenecks you need to eliminate..."
+                    placeholder="Write your message here..."
                     value={formData.message}
                     onChange={handleInputChange}
                     className={`px-3.5 py-2.5 text-sm border font-mono rounded-none focus:outline-none focus:ring-1 focus:ring-brand-green focus:border-brand-green ${
@@ -408,12 +405,12 @@ export default function Contact({ darkMode }: ContactProps) {
                   {isSubmitting ? (
                     <>
                       <span className="h-4 w-4 rounded-none border-2 border-r-transparent border-neutral-950 animate-spin"></span>
-                      <span>Compiling Pipeline...</span>
+                      <span>Sending Message...</span>
                     </>
                   ) : (
                     <>
                       <Send size={14} />
-                      <span>Trigger Webhook</span>
+                      <span>Send Message</span>
                     </>
                   )}
                 </button>

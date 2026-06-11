@@ -14,6 +14,7 @@ export interface Project {
   bulletPoints: string[];
   workflow: WorkflowStep[];
   stack: string[];
+  imageUrl?: string;
 }
 
 export interface Service {

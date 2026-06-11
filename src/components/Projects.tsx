@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { PROJECTS } from '../data';
 import { Project, WorkflowStep, StepType } from '../types';
@@ -18,7 +18,9 @@ import {
   ExternalLink,
   MessageSquare,
   Search,
-  Filter
+  Filter,
+  X,
+  ChevronLeft
 } from 'lucide-react';
 
 interface ProjectsProps {
@@ -29,6 +31,8 @@ export default function Projects({ darkMode }: ProjectsProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [activeProjectIdx, setActiveProjectIdx] = useState<number>(0);
+  const [isLightboxOpen, setIsLightboxOpen] = useState<boolean>(false);
+  const [lightboxProjectIdx, setLightboxProjectIdx] = useState<number>(0);
 
   // Group Categories based on skills
   const categories = [
@@ -63,6 +67,31 @@ export default function Projects({ darkMode }: ProjectsProps) {
   // Reset active project idx if it goes out of bounds of current filtered list
   const safeActiveIdx = activeProjectIdx >= filteredProjects.length ? 0 : activeProjectIdx;
   const currentProject = filteredProjects[safeActiveIdx];
+
+  // Keyboard navigation for Lightbox
+  useEffect(() => {
+    if (!isLightboxOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsLightboxOpen(false);
+      } else if (e.key === 'ArrowRight') {
+        setLightboxProjectIdx((prev) => (prev === filteredProjects.length - 1 ? 0 : prev + 1));
+      } else if (e.key === 'ArrowLeft') {
+        setLightboxProjectIdx((prev) => (prev === 0 ? filteredProjects.length - 1 : prev - 1));
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isLightboxOpen, filteredProjects.length]);
+
+  const openLightbox = (idx: number) => {
+    setLightboxProjectIdx(idx);
+    setIsLightboxOpen(true);
+  };
 
   // Helper to color-code workflow nodes
   const getStepStyles = (type: StepType) => {
@@ -239,9 +268,20 @@ export default function Projects({ darkMode }: ProjectsProps) {
                           </h4>
                           {isActive && <ChevronRight size={16} className="text-brand-green flex-shrink-0" />}
                         </div>
-                        <p className="text-[10px] font-mono tracking-wide mt-0.5 text-black font-extrabold dark:text-neutral-400 truncate">
-                          {project.subtitle}
-                        </p>
+                        <div className="flex items-center justify-between mt-1.5 gap-2">
+                          <p className="text-[10px] font-mono tracking-wide text-neutral-600 dark:text-neutral-400 truncate flex-1">
+                            {project.subtitle}
+                          </p>
+                          <span 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              openLightbox(idx);
+                            }}
+                            className="text-[9px] font-mono font-bold tracking-wider px-2 py-0.5 border border-brand-green/20 hover:border-brand-green text-brand-light-green dark:text-brand-green hover:bg-brand-green hover:text-black transition-all cursor-zoom-in"
+                          >
+                            SCREENSHOT
+                          </span>
+                        </div>
                       </div>
                     </button>
                   );
@@ -330,6 +370,40 @@ export default function Projects({ darkMode }: ProjectsProps) {
                     </div>
                   </div>
 
+                  {/* Real Production Screenshot Card */}
+                  {currentProject.imageUrl && (
+                    <div className="space-y-3" id={`screenshot-area-${currentProject.id}`}>
+                      <p className="font-mono text-[10px] uppercase tracking-widest text-[#999999] font-extrabold flex items-center justify-between">
+                        <span>Original Production Blueprint</span>
+                        <span className="text-[9px] text-brand-light-green dark:text-brand-green font-bold select-none">[ CLICK FOR LIGHTBOX ]</span>
+                      </p>
+                      <div 
+                        onClick={() => openLightbox(safeActiveIdx)}
+                        className={`group relative overflow-hidden border cursor-zoom-in transition-all duration-300 ${
+                          darkMode 
+                            ? 'bg-neutral-950 border-[#2A2A2A] hover:border-brand-green/50' 
+                            : 'bg-[#FAF9F5] border-cream-border hover:border-brand-light-green'
+                        }`}
+                        id={`screenshot-container-${currentProject.id}`}
+                      >
+                        <div className="aspect-[16/7] md:aspect-[16/6] w-full overflow-hidden flex items-center justify-center bg-black/10 dark:bg-black/45">
+                          <img 
+                            src={currentProject.imageUrl} 
+                            alt={`${currentProject.title} screenshot`}
+                            referrerPolicy="no-referrer"
+                            className="w-full h-auto object-cover object-top transition-transform duration-500 group-hover:scale-[1.01]"
+                          />
+                        </div>
+                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-350 flex items-center justify-center backdrop-blur-xs font-mono font-bold">
+                          <span className="bg-brand-green text-black font-mono text-[11px] font-bold px-3 py-1.5 flex items-center gap-1.5 shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                            <ExternalLink size={12} />
+                            EXPAND BLUEPRINT SCREENSHOT
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   {/* Context and Bullet Descriptions */}
                   <div className="space-y-4">
                     <p className={`text-sm leading-relaxed font-semibold ${darkMode ? 'text-neutral-350' : 'text-black'}`}>
@@ -375,6 +449,94 @@ export default function Projects({ darkMode }: ProjectsProps) {
         )}
 
       </div>
+
+      {/* Lightbox / Screenshot Modal Overlay */}
+      <AnimatePresence>
+        {isLightboxOpen && filteredProjects[lightboxProjectIdx] && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/92 backdrop-blur-md"
+            onClick={() => setIsLightboxOpen(false)}
+          >
+            {/* Close button with escape key action handled in useEffect */}
+            <button
+              onClick={() => setIsLightboxOpen(false)}
+              className="absolute top-6 right-6 text-white/70 hover:text-white bg-white/10 hover:bg-white/25 p-2 rounded-none transition-all cursor-pointer border border-white/15"
+              aria-label="Close modal"
+            >
+              <X size={18} />
+            </button>
+
+            {/* Navigation Left Arrow */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setLightboxProjectIdx((prev) => (prev === 0 ? filteredProjects.length - 1 : prev - 1));
+              }}
+              className="absolute left-4 md:left-6 text-white/70 hover:text-white bg-white/10 hover:bg-white/25 p-2.5 rounded-none transition-all cursor-pointer border border-white/15"
+              aria-label="Previous screenshot"
+            >
+              <ChevronLeft size={22} />
+            </button>
+
+            {/* Main Interactive Content Block */}
+            <motion.div
+              initial={{ scale: 0.96, y: 10 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.96, y: 10 }}
+              transition={{ type: "spring", damping: 25, stiffness: 350 }}
+              className="max-w-5xl w-full flex flex-col items-center space-y-4"
+              onClick={(e) => e.stopPropagation()} // Prevent closing when clicking actual image
+            >
+              {/* Screenshot Header Info */}
+              <div className="text-center space-y-1 w-full max-w-4xl px-4">
+                <span className="font-mono text-[9px] font-bold text-brand-green uppercase tracking-widest bg-brand-green/10 border border-brand-green/20 px-2.5 py-0.5 inline-block">
+                  ● INTERACTION MODEL SCREENSHOT ({lightboxProjectIdx + 1} of {filteredProjects.length})
+                </span>
+                <h3 className="text-base sm:text-lg md:text-xl font-display font-black text-white uppercase tracking-tight mt-1.5">
+                  {filteredProjects[lightboxProjectIdx].title}
+                </h3>
+                <p className="text-[10px] sm:text-xs font-mono text-neutral-400">
+                  {filteredProjects[lightboxProjectIdx].subtitle}
+                </p>
+              </div>
+
+              {/* High-res Image Wrapper with shadow effects */}
+              <div className="relative border border-neutral-800 bg-neutral-950 w-full max-h-[66vh] flex items-center justify-center overflow-auto p-1 sm:p-2">
+                <img
+                  src={filteredProjects[lightboxProjectIdx].imageUrl}
+                  alt={`${filteredProjects[lightboxProjectIdx].title} Workflow screenshot`}
+                  referrerPolicy="no-referrer"
+                  className="max-w-full max-h-[62vh] object-contain"
+                />
+              </div>
+
+              {/* Extra micro-details footer */}
+              <div className="flex flex-wrap items-center justify-center gap-1.5 max-w-2xl px-4 pt-1.5">
+                {filteredProjects[lightboxProjectIdx].stack.map((item) => (
+                  <span key={item} className="text-[10px] font-mono bg-neutral-900 border border-neutral-850 text-brand-green px-2.5 py-0.5">
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Navigation Right Arrow */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setLightboxProjectIdx((prev) => (prev === filteredProjects.length - 1 ? 0 : prev + 1));
+              }}
+              className="absolute right-4 md:right-6 text-white/70 hover:text-white bg-white/10 hover:bg-white/25 p-2.5 rounded-none transition-all cursor-pointer border border-white/15"
+              aria-label="Next screenshot"
+            >
+              <ChevronRight size={22} />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
