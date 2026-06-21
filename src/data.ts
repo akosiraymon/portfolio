@@ -211,6 +211,28 @@ export const PROJECTS: Project[] = [
     ],
     stack: ["Zapier Router", "Youform", "Apollo.io API", "Slack API", "AI by Zapier", "Google Sheets"],
     imageUrl: "/src/assets/images/lead_enrichment_pipeline_1780933279283.png"
+  },
+  {
+    id: "voice-ai-receptionist",
+    title: "Voice AI Receptionist & Scheduling Automation",
+    subtitle: "n8n · Voice AI · Google Calendar · Airtable · Webhooks",
+    description: "A fully automated voice AI receptionist that handles appointment booking end-to-end — no human required on the line. Built four interconnected n8n workflows (GetSlots, BookSlot, UpdateSlot, CancelSlot) exposed as webhook tools that a voice AI agent calls in real time during a live phone conversation.",
+    bulletPoints: [
+      "Checks real-time availability against Google Calendar and returns open slots mid-call",
+      "Books, reschedules, and cancels appointments, keeping Google Calendar and Airtable perfectly in sync",
+      "Handles timezone conversion automatically so scheduling stays accurate no matter where the caller is",
+      "Built-in validation and error handling at every step, so the AI agent always has a clean, accurate answer to give the caller",
+      "Replaces a human receptionist for routine scheduling — live, 24/7, with zero missed calls"
+    ],
+    workflow: [
+      { label: "Voice Bot Call Trigger", type: "trigger", details: "Incoming live phone call initializes real-time voice session" },
+      { label: "GetSlots Webhook", type: "api", details: "Checks real-time availability against Google Calendar" },
+      { label: "BookSlot Webhook", type: "database", details: "Secures slot, registers in Airtable, sends calendar invite" },
+      { label: "UpdateSlot Webhook", type: "crm", details: "Reschedules, updates calendar event & book records dynamically" },
+      { label: "CancelSlot Webhook", type: "action", details: "Cancels appointment, frees calendar block and keeps database accurate" }
+    ],
+    stack: ["n8n", "Voice AI", "Google Calendar API", "Airtable API", "Webhooks", "Timezone Engine"],
+    imageUrl: "/src/assets/images/voice_ai_receptionist_1782012655851.jpg"
   }
 ];
 

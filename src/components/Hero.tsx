@@ -41,12 +41,15 @@ export default function Hero({ darkMode }: HeroProps) {
     <section 
       id="hero" 
       className={`relative min-h-[calc(100vh-4rem)] flex items-center justify-center overflow-hidden py-16 ${
-        darkMode ? 'bg-[#0D0D0D] text-[#E0E0E0] editorial-grid-dark' : 'bg-cream-bg text-black editorial-grid'
+        darkMode ? 'bg-[#070708] text-[#E0E0E0] editorial-grid-dark' : 'bg-cream-bg text-black editorial-grid'
       }`}
     >
-      {/* Subtle radial glow */}
-      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-brand-green/5 blur-[120px] pointer-events-none"></div>
-      <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-96 h-96 rounded-full bg-brand-green/5 blur-[120px] pointer-events-none"></div>
+      {/* Sleek planet eclipse glowing arc - key visual feature of referenced RichPath design */}
+      <div className="planet-glow-curve"></div>
+
+      {/* Decorative top-left neon radial glows */}
+      <div className="absolute top-12 left-1/4 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-brand-green/10 blur-[130px] pointer-events-none"></div>
+      <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-[400px] h-[400px] rounded-full bg-brand-light-green/5 blur-[140px] pointer-events-none"></div>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
@@ -59,8 +62,12 @@ export default function Hero({ darkMode }: HeroProps) {
             animate="visible"
             id="hero-content-wrapper"
           >
-            {/* Status Batch */}
-            <motion.div variants={itemVariants} className="inline-flex items-center space-x-2 bg-neutral-900/40 dark:bg-black border border-neutral-200 dark:border-[#2A2A2A] px-3.5 py-1.5 rounded-none text-xs font-mono text-black dark:text-brand-green font-extrabold tracking-wider" id="availability-status">
+            {/* Status Batch - Pill shape with orange indicator */}
+            <motion.div 
+              variants={itemVariants} 
+              className="inline-flex items-center space-x-2 bg-[#121215] border border-brand-green/30 px-4 py-1.5 rounded-full text-xs font-mono text-brand-green font-bold tracking-wider shadow-sm shadow-brand-green/5" 
+              id="availability-status"
+            >
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-green opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-green"></span>
@@ -69,24 +76,24 @@ export default function Hero({ darkMode }: HeroProps) {
             </motion.div>
  
             {/* Profession / Name Area */}
-            <div className="space-y-3">
+            <div className="space-y-4">
               <motion.h1 
                 variants={itemVariants} 
                 className="text-4xl sm:text-5xl lg:text-7xl font-display font-black tracking-tight uppercase leading-none text-black dark:text-white"
                 id="hero-role-title"
               >
                 Building Systems That{" "}
-                <span className="block text-brand-light-green dark:text-brand-green">
+                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-brand-green to-brand-light-green">
                   Run Without You.
                 </span>
               </motion.h1>
               
               <motion.p 
                 variants={itemVariants} 
-                className="text-lg font-mono font-bold tracking-tight text-black dark:text-neutral-400"
+                className="text-lg font-mono font-bold tracking-tight text-neutral-800 dark:text-neutral-400"
                 id="hero-personal-branding"
               >
-                Hi, I'm <strong className="font-black text-black dark:text-brand-green">{PERSONAL_INFO.name}</strong> — {PERSONAL_INFO.title}
+                Hi, I'm <strong className="font-black text-brand-green">{PERSONAL_INFO.name}</strong> — {PERSONAL_INFO.title}
               </motion.p>
             </div>
  
@@ -94,50 +101,50 @@ export default function Hero({ darkMode }: HeroProps) {
             <motion.p 
               variants={itemVariants} 
               className={`text-base leading-relaxed max-w-2xl mx-auto lg:mx-0 font-medium ${
-                darkMode ? 'text-neutral-400' : 'text-black'
+                darkMode ? 'text-neutral-400' : 'text-neutral-800'
               }`}
               id="hero-professional-summary"
             >
               {PERSONAL_INFO.summary}
             </motion.p>
 
-            {/* Direct Contact Details Grid */}
+            {/* Direct Contact Details Grid - rounded layout with subtle borders */}
             <motion.div 
               variants={itemVariants} 
-              className={`grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl mx-auto lg:mx-0 p-5 rounded-none border text-xs font-mono ${
+              className={`grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl mx-auto lg:mx-0 p-5 rounded-2xl border text-xs font-mono ${
                 darkMode 
-                  ? 'bg-black/90 border-[#2A2A2A] text-neutral-300' 
-                  : 'bg-white border-cream-border text-black shadow-sm font-extrabold'
+                  ? 'bg-[#121215]/80 backdrop-blur-md border-brand-green/10 text-neutral-350 shadow-inner' 
+                  : 'bg-white border-cream-border text-neutral-800 shadow-sm font-extrabold'
               }`}
               id="hero-contact-card"
             >
               <div className="flex items-center space-x-3" id="metric-location">
-                <MapPin size={15} className="text-brand-light-green dark:text-brand-green flex-shrink-0" />
-                <span className="text-black dark:text-neutral-300">{PERSONAL_INFO.location}</span>
+                <MapPin size={15} className="text-brand-green flex-shrink-0" />
+                <span className="text-neutral-800 dark:text-neutral-300">{PERSONAL_INFO.location}</span>
               </div>
               <div className="flex items-center space-x-3" id="metric-email">
-                <Mail size={15} className="text-brand-light-green dark:text-brand-green flex-shrink-0" />
-                <a href={`mailto:${PERSONAL_INFO.email}`} className="text-black dark:text-neutral-300 hover:underline hover:text-brand-light-green dark:hover:text-brand-green break-all">{PERSONAL_INFO.email}</a>
+                <Mail size={15} className="text-brand-green flex-shrink-0" />
+                <a href={`mailto:${PERSONAL_INFO.email}`} className="text-neutral-800 dark:text-neutral-300 hover:underline hover:text-brand-green break-all">{PERSONAL_INFO.email}</a>
               </div>
               <div className="flex items-center space-x-3" id="metric-phone">
-                <Phone size={15} className="text-brand-light-green dark:text-brand-green flex-shrink-0" />
-                <a href={`tel:${PERSONAL_INFO.phone.replace(/\s+/g, '')}`} className="text-black dark:text-neutral-300 hover:underline hover:text-brand-light-green dark:hover:text-brand-green">{PERSONAL_INFO.phone}</a>
+                <Phone size={15} className="text-brand-green flex-shrink-0" />
+                <a href={`tel:${PERSONAL_INFO.phone.replace(/\s+/g, '')}`} className="text-neutral-800 dark:text-neutral-300 hover:underline hover:text-brand-green">{PERSONAL_INFO.phone}</a>
               </div>
               <div className="flex items-center space-x-3" id="metric-linkedin">
-                <Linkedin size={15} className="text-brand-light-green dark:text-brand-green flex-shrink-0" />
-                <a href={PERSONAL_INFO.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-black dark:text-neutral-300 hover:underline hover:text-brand-light-green dark:hover:text-brand-green">linkedin.com/in/RAcastano</a>
+                <Linkedin size={15} className="text-brand-green flex-shrink-0" />
+                <a href={PERSONAL_INFO.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-neutral-800 dark:text-neutral-300 hover:underline hover:text-brand-green">linkedin.com/in/RAcastano</a>
               </div>
             </motion.div>
  
             {/* CTA Actions */}
             <motion.div 
               variants={itemVariants} 
-              className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4"
+              className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-1"
               id="hero-actions-container"
             >
               <button
                 onClick={handleContactScroll}
-                className="w-full sm:w-auto px-6 py-4 px-8 text-xs font-mono font-bold uppercase tracking-widest bg-brand-light-green dark:bg-brand-green hover:bg-brand-light-green/90 dark:bg-brand-green text-[#0D0D0D] dark:text-[#0D0D0D] shadow-sm hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer inline-flex items-center justify-center space-x-2"
+                className="w-full sm:w-auto px-8 py-4 text-xs font-mono font-bold uppercase tracking-widest bg-brand-green hover:bg-brand-green/90 text-white rounded-full shadow-lg shadow-brand-green/10 hover:shadow-brand-green/20 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer inline-flex items-center justify-center space-x-2"
                 id="hero-book-cta"
               >
                 <span>Automate My Business</span>
@@ -146,9 +153,9 @@ export default function Hero({ darkMode }: HeroProps) {
               
               <button
                 onClick={handleWorksScroll}
-                className={`w-full sm:w-auto px-6 py-4 px-8 text-xs font-mono font-black uppercase tracking-widest border hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer inline-flex items-center justify-center space-x-2 ${
+                className={`w-full sm:w-auto px-8 py-4 text-xs font-mono font-black uppercase tracking-widest border rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer inline-flex items-center justify-center space-x-2 ${
                   darkMode 
-                    ? 'border-[#2A2A2A] bg-black text-neutral-200 hover:bg-neutral-900' 
+                    ? 'border-neutral-800 bg-neutral-900/60 text-neutral-200 hover:bg-neutral-900' 
                     : 'border-black bg-white hover:bg-[#F5F4EF] text-black font-extrabold'
                 }`}
                 id="hero-portfolio-cta"
@@ -160,13 +167,16 @@ export default function Hero({ darkMode }: HeroProps) {
 
           {/* Interactive Flow visualizer */}
           <div className="lg:col-span-5 relative" id="hero-interactive-demo">
+            {/* Soft decorative blur circle behind the visualizer card, echoing the RichPath mockup highlights */}
+            <div className="absolute inset-0 bg-brand-green/5 rounded-3xl blur-[50px] pointer-events-none"></div>
+            
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className={`rounded-2xl border p-6 font-mono relative overflow-hidden shadow-xl ${
+              className={`rounded-2xl border p-6 font-mono relative overflow-hidden shadow-2xl ${
                 darkMode 
-                  ? 'bg-neutral-900/90 border-neutral-800 text-neutral-200' 
+                  ? 'bg-[#121215]/95 border-brand-green/20 text-neutral-200' 
                   : 'bg-white border-cream-border text-black'
               }`}
               id="hero-piping-visualizer"

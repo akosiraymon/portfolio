@@ -102,7 +102,7 @@ export default function Contact({ darkMode }: ContactProps) {
       id="contact" 
       className={`py-20 border-t transition-colors duration-300 ${
         darkMode 
-          ? 'bg-[#0D0D0D] border-[#2A2A2A] text-[#E0E0E0]' 
+          ? 'bg-[#070708] border-[#16161A] text-[#E0E0E0]' 
           : 'bg-cream-bg border-cream-border text-black'
       }`}
     >
@@ -110,14 +110,14 @@ export default function Contact({ darkMode }: ContactProps) {
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <p className="font-mono text-xs uppercase tracking-widest text-brand-light-green dark:text-brand-green font-bold" id="contact-tagline">
+          <p className="font-mono text-xs uppercase tracking-widest text-[#FF5A1F] font-bold" id="contact-tagline">
             [ Connect Instantly ]
           </p>
-          <h2 className="text-3xl sm:text-4xl font-display font-black tracking-tight uppercase" id="contact-main-title">
+          <h2 className="text-2xl sm:text-4xl font-display font-black tracking-tight uppercase" id="contact-main-title">
             Trigger a Consultation Thread
           </h2>
-          <div className="w-16 h-0.5 bg-brand-light-green dark:bg-brand-green mx-auto"></div>
-          <p className={`text-sm sm:text-base font-semibold ${darkMode ? 'text-neutral-400' : 'text-black'}`} id="contact-description">
+          <div className="w-16 h-0.5 bg-brand-green mx-auto"></div>
+          <p className={`text-sm sm:text-base font-semibold ${darkMode ? 'text-neutral-400' : 'text-neutral-800'}`} id="contact-description">
             Get an automated operation audit. Send your project details, or copy my contact properties below to schedule a callback.
           </p>
         </div>
@@ -135,41 +135,41 @@ export default function Contact({ darkMode }: ContactProps) {
             <div className="space-y-4 font-mono" id="properties-container">
               
               {/* Location Badge */}
-              <div className={`p-4 rounded-none border flex items-center justify-between ${
-                darkMode ? 'bg-[#0F0F0F] border-[#2A2A2A]' : 'bg-white border-cream-border'
+              <div className={`p-4 rounded-2xl border flex items-center justify-between ${
+                darkMode ? 'bg-[#121215] border-[#222226]' : 'bg-white border-cream-border'
               }`} id="contact-node-loc">
                 <div className="flex items-center space-x-3 text-sm min-w-0">
-                  <span className="p-2 rounded-none bg-neutral-100 dark:bg-neutral-900 text-brand-light-green dark:text-brand-green border border-cream-border dark:border-[#2A2A2A] flex-shrink-0">
+                  <span className="p-2 rounded-xl bg-neutral-100 dark:bg-[#1C1C22] text-brand-green border border-cream-border dark:border-[#2A2A2A] flex-shrink-0">
                     <MapPin size={16} />
                   </span>
                   <div className="truncate">
-                    <p className="text-[9px] text-black font-extrabold uppercase tracking-wider leading-none">Property location</p>
+                    <p className="text-[9px] text-[#FF5A1F] font-extrabold uppercase tracking-wider leading-none">Property location</p>
                     <p className="text-xs font-bold text-black dark:text-neutral-200 truncate mt-1 uppercase">{PERSONAL_INFO.location}</p>
                   </div>
                 </div>
               </div>
 
               {/* Email Badge */}
-              <div className={`p-4 rounded-none border flex items-center justify-between ${
-                darkMode ? 'bg-[#0F0F0F] border-[#2A2A2A]' : 'bg-white border-cream-border'
+              <div className={`p-4 rounded-2xl border flex items-center justify-between ${
+                darkMode ? 'bg-[#121215] border-[#222226]' : 'bg-white border-cream-border'
               }`} id="contact-node-email">
                 <div className="flex items-center space-x-3 text-sm min-w-0 flex-1">
-                  <span className="p-2 rounded-none bg-neutral-100 dark:bg-neutral-900 text-brand-light-green dark:text-brand-green border border-cream-border dark:border-[#2A2A2A] flex-shrink-0">
+                  <span className="p-2 rounded-xl bg-neutral-100 dark:bg-[#1C1C22] text-brand-green border border-cream-border dark:border-[#2A2A2A] flex-shrink-0">
                     <Mail size={16} />
                   </span>
                   <div className="truncate flex-1">
-                    <p className="text-[9px] text-black font-extrabold uppercase tracking-wider leading-none">Callback email</p>
-                    <a href={`mailto:${PERSONAL_INFO.email}`} className="text-xs font-bold text-black dark:text-neutral-100 hover:underline hover:text-brand-light-green dark:hover:text-brand-green block truncate mt-1">{PERSONAL_INFO.email}</a>
+                    <p className="text-[9px] text-[#FF5A1F] font-extrabold uppercase tracking-wider leading-none">Callback email</p>
+                    <a href={`mailto:${PERSONAL_INFO.email}`} className="text-xs font-bold text-black dark:text-neutral-100 hover:underline hover:text-brand-green block truncate mt-1">{PERSONAL_INFO.email}</a>
                   </div>
                 </div>
                 
                 <button
                   onClick={() => handleCopy(PERSONAL_INFO.email, 'email')}
-                  className={`p-2 rounded-none border transition-all cursor-pointer ${
+                  className={`p-2 rounded-xl border transition-all cursor-pointer ${
                     copiedField === 'email'
                       ? 'bg-brand-green/10 border-brand-green/35 text-brand-green'
                       : darkMode
-                        ? 'bg-black border-[#2A2A2A] text-neutral-400 hover:text-white'
+                        ? 'bg-black border-neutral-800 text-neutral-400 hover:text-white'
                         : 'bg-white border-cream-border text-black hover:bg-[#FAF9F5] font-bold'
                   }`}
                   aria-label="Copy email payload"
@@ -179,26 +179,26 @@ export default function Contact({ darkMode }: ContactProps) {
               </div>
 
               {/* Phone Badge */}
-              <div className={`p-4 rounded-none border flex items-center justify-between ${
-                darkMode ? 'bg-[#0F0F0F] border-[#2A2A2A]' : 'bg-white border-cream-border'
+              <div className={`p-4 rounded-2xl border flex items-center justify-between ${
+                darkMode ? 'bg-[#121215] border-[#222226]' : 'bg-white border-cream-border'
               }`} id="contact-node-phone">
                 <div className="flex items-center space-x-3 text-sm min-w-0 flex-1">
-                  <span className="p-2 rounded-none bg-neutral-100 dark:bg-neutral-900 text-brand-light-green dark:text-brand-green border border-cream-border dark:border-[#2A2A2A] flex-shrink-0">
+                  <span className="p-2 rounded-xl bg-neutral-100 dark:bg-[#1C1C22] text-brand-green border border-cream-border dark:border-[#2A2A2A] flex-shrink-0">
                     <Phone size={16} />
                   </span>
                   <div className="truncate flex-1">
-                    <p className="text-[9px] text-black font-extrabold uppercase tracking-wider leading-none">System mobile</p>
-                    <a href={`tel:${PERSONAL_INFO.phone.replace(/\s+/g, '')}`} className="text-xs font-bold text-black dark:text-neutral-100 hover:underline hover:text-brand-light-green dark:hover:text-brand-green block truncate mt-1">{PERSONAL_INFO.phone}</a>
+                    <p className="text-[9px] text-[#FF5A1F] font-extrabold uppercase tracking-wider leading-none">System mobile</p>
+                    <a href={`tel:${PERSONAL_INFO.phone.replace(/\s+/g, '')}`} className="text-xs font-bold text-black dark:text-neutral-100 hover:underline hover:text-brand-green block truncate mt-1">{PERSONAL_INFO.phone}</a>
                   </div>
                 </div>
                 
                 <button
                   onClick={() => handleCopy(PERSONAL_INFO.phone, 'phone')}
-                  className={`p-2 rounded-none border transition-all cursor-pointer ${
+                  className={`p-2 rounded-xl border transition-all cursor-pointer ${
                     copiedField === 'phone'
                       ? 'bg-brand-green/10 border-brand-green/35 text-brand-green'
                       : darkMode
-                        ? 'bg-black border-[#2A2A2A] text-neutral-400 hover:text-white'
+                        ? 'bg-black border-neutral-800 text-neutral-400 hover:text-white'
                         : 'bg-white border-cream-border text-black hover:bg-[#FAF9F5] font-bold'
                   }`}
                   aria-label="Copy phone number payload"
@@ -208,26 +208,26 @@ export default function Contact({ darkMode }: ContactProps) {
               </div>
 
               {/* Linkedin Badge */}
-              <div className={`p-4 rounded-none border flex items-center justify-between ${
-                darkMode ? 'bg-[#0F0F0F] border-[#2A2A2A]' : 'bg-white border-cream-border'
+              <div className={`p-4 rounded-2xl border flex items-center justify-between ${
+                darkMode ? 'bg-[#121215] border-[#222226]' : 'bg-white border-cream-border'
               }`} id="contact-node-linkedin">
                 <div className="flex items-center space-x-3 text-sm min-w-0 flex-1">
-                  <span className="p-2 rounded-none bg-neutral-100 dark:bg-neutral-900 text-brand-light-green dark:text-brand-green border border-cream-border dark:border-[#2A2A2A] flex-shrink-0">
+                  <span className="p-2 rounded-xl bg-neutral-100 dark:bg-[#1C1C22] text-brand-green border border-cream-border dark:border-[#2A2A2A] flex-shrink-0">
                     <Linkedin size={16} />
                   </span>
                   <div className="truncate flex-1">
-                    <p className="text-[9px] text-black font-extrabold uppercase tracking-wider leading-none">LinkedIn Profile</p>
-                    <a href={PERSONAL_INFO.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-xs font-bold text-black dark:text-neutral-200 hover:underline hover:text-brand-light-green dark:hover:text-brand-green block truncate mt-1">linkedin.com/in/RAcastano</a>
+                    <p className="text-[9px] text-[#FF5A1F] font-extrabold uppercase tracking-wider leading-none">LinkedIn Profile</p>
+                    <a href={PERSONAL_INFO.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-xs font-bold text-black dark:text-neutral-200 hover:underline hover:text-brand-green block truncate mt-1">linkedin.com/in/RAcastano</a>
                   </div>
                 </div>
                 
                 <button
                   onClick={() => handleCopy(PERSONAL_INFO.linkedin, 'linkedin')}
-                  className={`p-2 rounded-none border transition-all cursor-pointer ${
+                  className={`p-2 rounded-xl border transition-all cursor-pointer ${
                     copiedField === 'linkedin'
                       ? 'bg-brand-green/10 border-brand-green/35 text-brand-green'
                       : darkMode
-                        ? 'bg-black border-[#2A2A2A] text-neutral-400 hover:text-white'
+                        ? 'bg-black border-neutral-800 text-neutral-400 hover:text-white'
                         : 'bg-white border-cream-border text-black hover:bg-[#FAF9F5] font-bold'
                   }`}
                   aria-label="Copy linkedin url payload"
@@ -240,12 +240,12 @@ export default function Contact({ darkMode }: ContactProps) {
 
             {/* Simulated Live Terminal output of active submissions, if any */}
             {inquiries.length > 0 && (
-              <div className={`rounded-none border p-4 text-xs font-mono max-h-[220px] overflow-y-auto ${
-                darkMode ? 'bg-black border-[#2A2A2A] text-brand-green' : 'bg-neutral-900 text-[#00FF66] border-neutral-700'
+              <div className={`rounded-2xl border p-4 text-xs font-mono max-h-[220px] overflow-y-auto ${
+                darkMode ? 'bg-[#121215] border-neutral-800 text-brand-green' : 'bg-neutral-900 text-[#00FF66] border-neutral-700'
               }`} id="terminal-inquiries">
-                <div className="flex items-center justify-between border-b pb-2 mb-2 border-neutral-800 text-neutral-400">
+                <div className="flex items-center justify-between border-b pb-2 mb-2 border-neutral-800 text-neutral-450">
                   <span className="flex items-center gap-1">
-                    <span className="h-1.5 w-1.5 rounded-none bg-brand-green inline-block animate-pulse"></span>
+                    <span className="h-1.5 w-1.5 rounded-full bg-brand-green inline-block animate-pulse"></span>
                     Contact Sandbox Terminal
                   </span>
                   <span className="text-[9px] uppercase tracking-wider">Inquiries queue</span>
@@ -255,15 +255,15 @@ export default function Contact({ darkMode }: ContactProps) {
                     <div key={item.id} className="border-b border-neutral-800 pb-2 relative group" id={`inq-terminal-${item.id}`}>
                       <button 
                         onClick={() => clearInquiry(item.id)}
-                        className="absolute right-0 top-0 text-rose-500 hover:text-rose-400 p-1 rounded-none hover:bg-white/10 opacity-30 group-hover:opacity-100 transition-opacity cursor-pointer"
+                        className="absolute right-0 top-0 text-rose-500 hover:text-rose-400 p-1 rounded-md hover:bg-white/10 opacity-30 group-hover:opacity-100 transition-opacity cursor-pointer"
                         title="Delete record from sandbox"
                       >
                         <Trash2 size={12} />
                       </button>
-                      <p className="text-neutral-400 whitespace-nowrap"><span className="text-brand-light-green dark:text-brand-green">[{item.timestamp}]</span> Inquiry verified.</p>
+                      <p className="text-neutral-450 whitespace-nowrap"><span className="text-brand-green">[{item.timestamp}]</span> Inquiry verified.</p>
                       <p className="text-[11px] font-bold text-white mt-0.5 truncate">From: {item.name} ({item.email})</p>
-                      <p className="text-[11px] text-brand-green font-bold">Subject: {item.subject}</p>
-                      <p className="text-[10px] text-neutral-300 line-clamp-2 italic ml-3 border-l pl-2 border-brand-green/20">"{item.message}"</p>
+                      <p className="text-[11px] text-[#FF5A1F] font-semibold">Subject: {item.subject}</p>
+                      <p className="text-[10px] text-neutral-300 line-clamp-2 italic ml-3 border-l pl-2 border-brand-green/25">"{item.message}"</p>
                     </div>
                   ))}
                 </div>
@@ -274,8 +274,8 @@ export default function Contact({ darkMode }: ContactProps) {
 
           {/* RIGHT COLUMN: Interactive Form card (7 columns span) */}
           <div className="lg:col-span-7" id="contact-form-panel">
-            <div className={`border p-6 sm:p-8 relative rounded-none ${
-              darkMode ? 'bg-black border-[#2A2A2A]' : 'bg-white border-cream-border'
+            <div className={`border p-6 sm:p-8 relative rounded-2xl ${
+              darkMode ? 'bg-[#121215] border-[#222226]' : 'bg-white border-cream-border shadow-sm'
             }`}>
               
               {/* Form header message */}
@@ -294,19 +294,19 @@ export default function Contact({ darkMode }: ContactProps) {
                 {/* Visual success notice */}
                 <AnimatePresence>
                   {showSuccess && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="p-4 bg-emerald-500/10 dark:bg-emerald-950/30 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs sm:text-sm rounded-none font-mono flex items-start space-x-3"
-                      id="form-success-banner"
-                    >
-                      <span className="p-1 rounded-none bg-emerald-500/20 font-bold">INFO_LOG</span>
-                      <div className="min-w-0 flex-1">
-                        <p className="font-bold">Message sent successfully!</p>
-                        <p className="text-neutral-550 dark:text-neutral-400 mt-0.5">Your inquiry has been logged. You can review the entry in the Contact Sandbox Terminal log on the left.</p>
-                      </div>
-                    </motion.div>
+                     <motion.div
+                       initial={{ opacity: 0, y: -10 }}
+                       animate={{ opacity: 1, y: 0 }}
+                       exit={{ opacity: 0, y: -10 }}
+                       className="p-4 bg-emerald-500/10 dark:bg-emerald-950/30 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs sm:text-sm rounded-xl font-mono flex items-start space-x-3"
+                       id="form-success-banner"
+                     >
+                       <span className="p-1 rounded-md bg-emerald-500/20 font-bold">INFO_LOG</span>
+                       <div className="min-w-0 flex-1">
+                         <p className="font-bold">Message sent successfully!</p>
+                         <p className="text-neutral-550 dark:text-neutral-400 mt-0.5">Your inquiry has been logged. You can review the entry in the Contact Sandbox Terminal log on the left.</p>
+                       </div>
+                     </motion.div>
                   )}
                 </AnimatePresence>
 
@@ -324,9 +324,9 @@ export default function Contact({ darkMode }: ContactProps) {
                       placeholder="eg. Acme Analytics"
                       value={formData.name}
                       onChange={handleInputChange}
-                      className={`px-3.5 py-2.5 text-sm border font-mono rounded-none focus:outline-none focus:ring-1 focus:ring-brand-green focus:border-brand-green ${
+                      className={`px-3.5 py-2.5 text-sm border font-mono rounded-xl focus:outline-none focus:ring-1 focus:ring-brand-green focus:border-brand-green ${
                         darkMode 
-                          ? 'bg-neutral-950 border-[#2A2A2A] text-white placeholder-neutral-555' 
+                          ? 'bg-neutral-950 border-neutral-800 text-white placeholder-neutral-600' 
                           : 'bg-white border-cream-border text-neutral-900 placeholder-neutral-400'
                       }`}
                     />
@@ -344,9 +344,9 @@ export default function Contact({ darkMode }: ContactProps) {
                       placeholder="eg. ceo@acme.com"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className={`px-3.5 py-2.5 text-sm border font-mono rounded-none focus:outline-none focus:ring-1 focus:ring-brand-green focus:border-brand-green ${
-                        darkMode 
-                          ? 'bg-neutral-950 border-[#2A2A2A] text-white placeholder-neutral-555' 
+                      className={`px-3.5 py-2.5 text-sm border font-mono rounded-xl focus:outline-none focus:ring-1 focus:ring-brand-green focus:border-brand-green ${
+                        darkMode
+                          ? 'bg-neutral-950 border-neutral-800 text-white placeholder-neutral-600' 
                           : 'bg-white border-cream-border text-neutral-900 placeholder-neutral-400'
                       }`}
                     />
@@ -366,9 +366,9 @@ export default function Contact({ darkMode }: ContactProps) {
                     placeholder="eg. Automation Project Consultation"
                     value={formData.subject}
                     onChange={handleInputChange}
-                    className={`px-3.5 py-2.5 text-sm border font-mono rounded-none focus:outline-none focus:ring-1 focus:ring-brand-green focus:border-brand-green ${
+                    className={`px-3.5 py-2.5 text-sm border font-mono rounded-xl focus:outline-none focus:ring-1 focus:ring-brand-green focus:border-brand-green ${
                       darkMode 
-                        ? 'bg-neutral-950 border-[#2A2A2A] text-white placeholder-neutral-555' 
+                        ? 'bg-neutral-950 border-neutral-800 text-white placeholder-neutral-600' 
                         : 'bg-white border-cream-border text-neutral-900 placeholder-neutral-400'
                     }`}
                   />
@@ -387,24 +387,24 @@ export default function Contact({ darkMode }: ContactProps) {
                     placeholder="Write your message here..."
                     value={formData.message}
                     onChange={handleInputChange}
-                    className={`px-3.5 py-2.5 text-sm border font-mono rounded-none focus:outline-none focus:ring-1 focus:ring-brand-green focus:border-brand-green ${
+                    className={`px-3.5 py-2.5 text-sm border font-mono rounded-xl focus:outline-none focus:ring-1 focus:ring-brand-green focus:border-brand-green ${
                       darkMode 
-                        ? 'bg-neutral-950 border-[#2A2A2A] text-white placeholder-neutral-555' 
+                        ? 'bg-neutral-950 border-neutral-800 text-white placeholder-neutral-600' 
                         : 'bg-white border-cream-border text-neutral-900 placeholder-neutral-400'
                     }`}
                   />
                 </div>
 
-                {/* Submit button with loading trigger status */}
+                {/* Submit button with loading trigger status - beautiful pill button */}
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full h-12 uppercase tracking-widest text-xs font-mono font-bold rounded-none bg-brand-light-green dark:bg-brand-green hover:brightness-110 active:scale-[0.98] transition-all duration-200 text-neutral-900 flex items-center justify-center space-x-2.5 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="w-full h-12 uppercase tracking-widest text-[#0D0D0D] text-xs font-mono font-bold rounded-full bg-[#FF5A1F] text-white hover:bg-[#E04810] shadow-md shadow-brand-green/20 active:scale-[0.98] transition-all duration-200 flex items-center justify-center space-x-2.5 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
                   id="submit-form-trigger"
                 >
                   {isSubmitting ? (
                     <>
-                      <span className="h-4 w-4 rounded-none border-2 border-r-transparent border-neutral-950 animate-spin"></span>
+                      <span className="h-4 w-4 rounded-full border-2 border-r-transparent border-white animate-spin"></span>
                       <span>Sending Message...</span>
                     </>
                   ) : (

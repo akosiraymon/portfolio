@@ -79,7 +79,7 @@ export default function App() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.45, ease: "easeOut" }}
             onAnimationComplete={() => clearRipple(ripple.id)}
-            className="fixed pointer-events-none rounded-none border-2 border-brand-light-green dark:border-brand-green bg-brand-light-green/5 dark:bg-brand-green/5 z-[99] -translate-x-1/2 -translate-y-1/2"
+            className="fixed pointer-events-none rounded-full border-2 border-brand-light-green dark:border-brand-green bg-brand-light-green/5 dark:bg-brand-green/5 z-[99] -translate-x-1/2 -translate-y-1/2"
             style={{
               left: ripple.x,
               top: ripple.y,
@@ -100,9 +100,9 @@ export default function App() {
         <Hero darkMode={darkMode} />
 
         {/* Brand Core Skill Carousel Ribbon */}
-        <div className={`overflow-hidden py-3 border-b font-mono text-xs uppercase tracking-widest transition-colors duration-300 ${
+        <div className={`overflow-hidden py-3.5 border-b font-mono text-xs uppercase tracking-widest transition-colors duration-300 ${
           darkMode 
-            ? 'bg-[#0E0E0E] border-[#2A2A2A] text-brand-green' 
+            ? 'bg-[#121215] border-[#16161A] text-brand-green/90' 
             : 'bg-white border-cream-border text-brand-light-green'
         }`} id="brand-ribbon">
           <div className="flex animate-marquee whitespace-nowrap gap-8 justify-around items-center">
@@ -138,9 +138,9 @@ export default function App() {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={scrollToTop}
-            className={`fixed bottom-6 right-6 p-3 z-50 rounded-none border font-mono font-bold tracking-wider text-xs transition-colors duration-200 cursor-pointer flex items-center justify-center space-x-1 shadow-md ${
+            className={`fixed bottom-6 right-6 p-3.5 z-50 rounded-full border font-mono font-bold tracking-wider text-xs transition-colors duration-200 cursor-pointer flex items-center justify-center space-x-1 shadow-md ${
               darkMode 
-                ? 'bg-black border-brand-green text-brand-green hover:bg-[#111]' 
+                ? 'bg-neutral-900 border-brand-green/30 text-brand-green hover:bg-[#151519] shadow-brand-green/5' 
                 : 'bg-white border-black text-black hover:bg-neutral-100'
             }`}
             id="back-to-top-button"
@@ -154,7 +154,7 @@ export default function App() {
 
       {/* Structured Footer */}
       <footer className={`border-t py-12 px-4 transition-colors duration-300 ${
-        darkMode ? 'bg-black border-[#2A2A2A] text-neutral-450' : 'bg-cream-bg border-cream-border text-black font-semibold'
+        darkMode ? 'bg-[#070708] border-[#16161A] text-neutral-400' : 'bg-cream-bg border-cream-border text-black font-semibold'
       }`} id="portfolio-footer">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 border-b pb-8 border-cream-border dark:border-[#2A2A2A]">

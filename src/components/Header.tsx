@@ -71,9 +71,9 @@ export default function Header({ darkMode, setDarkMode }: HeaderProps) {
             {/* Theme Switcher Button */}
             <button
               onClick={() => setDarkMode(!darkMode)}
-              className={`p-2 rounded-lg border transition-all duration-200 hover:scale-105 cursor-pointer ${
+              className={`p-2.5 rounded-full border transition-all duration-200 hover:scale-105 cursor-pointer ${
                 darkMode 
-                  ? 'bg-neutral-950 border-[#2A2A2A] text-brand-green hover:bg-[#141414]' 
+                  ? 'bg-neutral-900 border-brand-green/20 text-brand-green hover:bg-[#1C1C1F]' 
                   : 'bg-cream-card border-cream-border text-neutral-800 hover:bg-neutral-200'
               }`}
               title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
@@ -87,7 +87,7 @@ export default function Header({ darkMode, setDarkMode }: HeaderProps) {
             <a
               href="#contact"
               onClick={(e) => handleNavClick(e, '#contact')}
-              className="inline-flex items-center space-x-2 px-4 h-9 text-xs font-mono font-bold uppercase tracking-widest rounded-lg border border-neutral-800 bg-neutral-900 dark:bg-transparent dark:border-brand-green/50 text-neutral-100 dark:text-brand-green hover:bg-neutral-850 dark:hover:bg-brand-green dark:hover:text-[#0D0D0D] transition-all duration-300"
+              className="inline-flex items-center space-x-2 px-5 h-9 text-xs font-mono font-bold uppercase tracking-widest rounded-full border border-neutral-800 bg-[#FF5A1F] text-white hover:bg-[#E04810] shadow-sm shadow-brand-green/10 transition-all duration-300"
               id="header-cta"
             >
               <Mail size={12} />
@@ -100,9 +100,9 @@ export default function Header({ darkMode, setDarkMode }: HeaderProps) {
             {/* Mobile Theme Toggle */}
             <button
               onClick={() => setDarkMode(!darkMode)}
-              className={`p-2 rounded-lg border cursor-pointer ${
+              className={`p-2 rounded-full border cursor-pointer ${
                 darkMode 
-                  ? 'bg-neutral-950 border-[#2A2A2A] text-brand-green' 
+                  ? 'bg-neutral-900 border-brand-green/20 text-brand-green' 
                   : 'bg-cream-card border-cream-border text-neutral-800'
               }`}
               aria-label="Toggle theme mobile"
@@ -114,9 +114,9 @@ export default function Header({ darkMode, setDarkMode }: HeaderProps) {
             {/* Mobile Menu Icon */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className={`p-2 rounded-lg border cursor-pointer ${
+              className={`p-2 rounded-full border cursor-pointer ${
                 darkMode 
-                  ? 'bg-neutral-950 border-[#2A2A2A] text-[#E0E0E0]' 
+                  ? 'bg-[#121215] border-neutral-800 text-[#E0E0E0]' 
                   : 'bg-cream-card border-cream-border text-neutral-800'
               }`}
               aria-label="Open main menu"
