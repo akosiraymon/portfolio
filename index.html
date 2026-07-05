@@ -1,13 +1,195 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RA CASTANO | Automation Specialist & AI Workflow Engineer</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Raymon Aiven S. Castano — Automation Specialist</title>
+<meta name="description" content="Automation specialist building no-code and AI-powered workflows with Zapier, Make, and n8n. Learning AI agents and workflow automation." />
 
+<!-- Prevent flash of wrong theme before CSS loads -->
+<script>
+  (function () {
+    var saved = localStorage.getItem('theme');
+    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var isDark = saved ? saved === 'dark' : prefersDark;
+    if (isDark) document.documentElement.classList.add('dark');
+  })();
+</script>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { darkMode: 'class' };
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css" />
+</head>
+<body class="antialiased">
+
+<div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursor-ring" aria-hidden="true"></div>
+<div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+
+<!-- ===== Nav ===== -->
+<header class="site-header" id="site-header">
+  <div class="wrap header-inner">
+    <a href="#top" class="brand">R.A. Castano<span class="brand-dot">.</span></a>
+
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#about">About</a>
+      <a href="#work">Work</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="header-actions">
+      <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle dark mode" aria-pressed="false">
+        <svg class="icon icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v3M12 18.5v3M4.4 4.4l2.1 2.1M17.5 17.5l2.1 2.1M2.5 12h3M18.5 12h3M4.4 19.6l2.1-2.1M17.5 6.5l2.1-2.1"/></svg>
+        <svg class="icon icon-moon" viewBox="0 0 24 24"><path d="M20.5 14.5A8.5 8.5 0 1 1 9.5 3.5a7 7 0 0 0 11 11Z"/></svg>
+      </button>
+      <a href="#contact" class="btn btn-primary btn-sm">Book a call</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ===== Hero ===== -->
+  <section class="hero" id="hero">
+    <div class="hero-grid" id="hero-grid" aria-hidden="true"></div>
+    <div class="hero-spotlight" aria-hidden="true"></div>
+    <div class="wrap hero-inner">
+      <div class="hero-avatar-row" data-reveal>
+        <span class="hero-avatar" id="hero-avatar">RC</span>
+        <span class="eyebrow">Automation Specialist · Learning AI Agents &amp; Workflow Automation</span>
+      </div>
+      <h1 data-reveal>I build workflows so repetitive work runs on its own.</h1>
+      <p class="hero-sub" data-reveal>
+        About 2 years building no-code and AI-assisted automations with Zapier, Make, and n8n for small
+        businesses and growing teams — and lately going deeper into AI agents, voice AI, and tool-calling.
+      </p>
+      <div class="hero-cta" data-reveal>
+        <a href="#work" class="btn btn-primary">See sample work</a>
+        <a href="#contact" class="btn btn-ghost">Book a discovery call</a>
+      </div>
+      <div class="marquee" data-reveal aria-label="Tools I work with">
+        <div class="marquee-track" id="marquee-track"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== About ===== -->
+  <section id="about" class="section">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <span class="section-kicker">About</span>
+        <h2>Automation background</h2>
+      </div>
+      <div class="about-grid">
+        <p class="about-copy" data-reveal>
+          I'm Raymon — a freelance automation specialist based in Manila. I connect the tools businesses
+          already use (Gmail, Google Sheets, Asana, Slack, CRMs) so information moves between them without
+          anyone re-typing it. Most of my work has been in Zapier, Make, and n8n; over the past year I've been
+          branching into AI agents — voice AI receptionists, conversational support bots, and webhook-based
+          tool-calling — and I'm actively deepening that skill set project by project.
+        </p>
+        <ul class="skill-pills" data-reveal>
+          <li>Zapier</li><li>Make</li><li>n8n</li><li>Power Automate</li>
+          <li>AI Agent Development</li><li>Voice AI (Vapi)</li><li>REST APIs &amp; Webhooks</li>
+          <li>CRM Automation</li><li>Google Workspace</li><li>Airtable</li>
+          <li>OpenAI &amp; Gemini</li><li>SOP Documentation</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Work ===== -->
+  <section id="work" class="section section-alt">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <span class="section-kicker">Selected Work</span>
+        <h2>Sample automation projects</h2>
+        <p class="section-sub">Click any project to see the workflow and the problem it solves.</p>
+      </div>
+
+      <div id="project-grid" class="project-grid"></div>
+    </div>
+  </section>
+
+  <!-- ===== Contact ===== -->
+  <section id="contact" class="section">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <span class="section-kicker">Contact</span>
+        <h2>Let's automate something</h2>
+        <p class="section-sub">Send a few details or grab a slot directly — either way I'll follow up personally.</p>
+      </div>
+
+      <div class="contact-grid">
+        <form id="contact-form" class="contact-form" data-reveal novalidate>
+          <div class="field">
+            <label for="cf-name">Name <span class="req">*</span></label>
+            <input id="cf-name" name="name" type="text" autocomplete="name" required />
+          </div>
+          <div class="field">
+            <label for="cf-company">Company name</label>
+            <input id="cf-company" name="company" type="text" autocomplete="organization" />
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="cf-email">Email <span class="req">*</span></label>
+              <input id="cf-email" name="email" type="email" autocomplete="email" required />
+            </div>
+            <div class="field">
+              <label for="cf-phone">Contact number</label>
+              <input id="cf-phone" name="phone" type="tel" autocomplete="tel" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="cf-message">What do you want to automate?</label>
+            <textarea id="cf-message" name="message" rows="4"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block" id="cf-submit">
+            <span class="btn-label">Send message</span>
+          </button>
+          <p class="form-status" id="cf-status" role="status" aria-live="polite"></p>
+        </form>
+
+        <div class="contact-side" data-reveal>
+          <div class="calendly-inline-widget" data-url="https://calendly.com/castanoraymon/discovery-call" style="min-width:280px;height:640px;"></div>
+          <div class="direct-contact">
+            <a href="mailto:castanoraymon@gmail.com">castanoraymon@gmail.com</a>
+            <a href="tel:+639164820241">+63 916 482 0241</a>
+            <a href="https://linkedin.com/in/RAcastano" target="_blank" rel="noopener">linkedin.com/in/RAcastano</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <span>&copy; <span id="year"></span> Raymon Aiven S. Castano</span>
+    <span class="footer-sub">Built and automated by hand — currently learning AI agents.</span>
+  </div>
+</footer>
+
+<!-- ===== Project Modal ===== -->
+<div id="project-modal" class="modal-overlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button type="button" class="modal-close" id="modal-close" aria-label="Close case study">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+<script src="data.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
