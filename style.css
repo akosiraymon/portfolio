@@ -139,12 +139,13 @@ html.dark .icon-moon { display: block; }
   opacity: 0.6;
   will-change: transform;
 }
-.hero-spotlight {
-  position: absolute; inset: 0; pointer-events: none; opacity: 0;
+/* Cursor-following glow across the whole site (sits behind content) */
+.page-glow {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0;
   transition: opacity var(--duration-base) var(--ease-out);
-  background: radial-gradient(480px circle at var(--mx, 50%) var(--my, 30%), var(--accent-glow), transparent 70%);
+  background: radial-gradient(460px circle at var(--gx, 50%) var(--gy, 50%), var(--accent-glow), transparent 70%);
 }
-.hero:hover .hero-spotlight { opacity: 1; }
+body.glow-active .page-glow { opacity: 1; }
 .hero-inner { position: relative; max-width: 760px; }
 .hero-avatar-row { display: flex; align-items: center; gap: 18px; margin-bottom: 26px; }
 .hero-avatar {
@@ -182,7 +183,7 @@ html.dark .icon-moon { display: block; }
 }
 @media (prefers-reduced-motion: reduce) {
   .marquee-track { animation: none; }
-  .hero-spotlight { display: none; }
+  .page-glow { display: none; }
 }
 
 /* ===== Sections ===== */

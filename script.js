@@ -111,11 +111,16 @@ if (supportsFinePointer && !prefersReducedMotion) {
   animateRing();
 }
 
-if (heroSection) {
-  heroSection.addEventListener('mousemove', (e) => {
-    const rect = heroSection.getBoundingClientRect();
-    heroSection.style.setProperty('--mx', `${e.clientX - rect.left}px`);
-    heroSection.style.setProperty('--my', `${e.clientY - rect.top}px`);
+// Cursor-following glow across the whole page (fixed layer uses viewport coords)
+const pageGlow = document.getElementById('page-glow');
+if (pageGlow && supportsFinePointer && !prefersReducedMotion) {
+  document.addEventListener('mousemove', (e) => {
+    pageGlow.style.setProperty('--gx', `${e.clientX}px`);
+    pageGlow.style.setProperty('--gy', `${e.clientY}px`);
+    document.body.classList.add('glow-active');
+  });
+  document.addEventListener('mouseleave', () => {
+    document.body.classList.remove('glow-active');
   });
 }
 
