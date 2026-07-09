@@ -17,7 +17,7 @@ themeToggle.setAttribute('aria-pressed', String(isDark()));
 // ===== Profile photo (falls back to initials if no file is present) =====
 const heroAvatar = document.getElementById('hero-avatar');
 (function tryLoadAvatar() {
-  const candidates = ['profile.jpg', 'profile.png', 'profile.jpeg', 'photo.jpg', 'photo.png'];
+  const candidates = ['profile.webp', 'profile.jpg', 'profile.png', 'profile.jpeg', 'photo.jpg', 'photo.png'];
   let i = 0;
   function tryNext() {
     if (i >= candidates.length) return; // keep initials fallback
