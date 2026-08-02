@@ -84,6 +84,7 @@ const TOOLS_MARQUEE = ['n8n', 'zapier', 'make', 'slack', 'gmail', 'googlecalenda
 const PROJECTS = [
   {
     id: 'voice-receptionist',
+    image: 'assets/projects/voice-receptionist.webp',
     title: 'AI Voice Receptionist & Appointment Scheduling',
     stack: 'n8n · Vapi · Google Calendar · Airtable',
     logos: ['n8n', 'googlecalendar', 'airtable'],
@@ -95,6 +96,7 @@ const PROJECTS = [
   },
   {
     id: 'fb-support-agent',
+    image: 'assets/projects/fb-support-agent.webp',
     title: 'AI Facebook Page Customer Support Agent',
     stack: 'n8n · Google Gemini · Webhooks',
     logos: ['n8n', 'facebook'],
@@ -106,6 +108,7 @@ const PROJECTS = [
   },
   {
     id: 'job-application-automation',
+    image: 'assets/projects/job-application.webp',
     title: 'AI Job Application Automation',
     stack: 'n8n · Slack · OpenRouter · Gmail',
     logos: ['n8n', 'slack', 'gmail'],
@@ -117,6 +120,7 @@ const PROJECTS = [
   },
   {
     id: 'xero-asana-sheets',
+    image: 'assets/projects/xero-asana-sheets.webp',
     title: 'Xero Financial Export → Asana & Sheets Sync',
     stack: 'Make · Xero API · Asana · Google Sheets',
     logos: ['make', 'xero', 'asana', 'googlesheets'],
@@ -128,6 +132,7 @@ const PROJECTS = [
   },
   {
     id: 'gmail-attachment-sorter',
+    image: 'assets/projects/gmail-attachment-sorter.webp',
     title: 'Gmail Attachment Sorter & Logger',
     stack: 'Make · Gmail · Google Drive · Sheets · AI',
     logos: ['make', 'gmail', 'googledrive', 'googlesheets'],
@@ -139,6 +144,7 @@ const PROJECTS = [
   },
   {
     id: 'content-repurposing',
+    image: 'assets/projects/content-repurposing.webp',
     title: 'Automated Content Repurposing & Publishing',
     stack: 'Zapier · Google Drive · Facebook · LinkedIn',
     logos: ['zapier', 'googledrive', 'facebook', 'linkedin'],
@@ -150,6 +156,7 @@ const PROJECTS = [
   },
   {
     id: 'asana-lead-followup',
+    image: 'assets/projects/asana-lead-followup.webp',
     title: 'Asana CRM Lead Engagement & Follow-Up',
     stack: 'Zapier · Asana · Gmail · Google Drive',
     logos: ['zapier', 'asana', 'gmail', 'googledrive'],
@@ -161,6 +168,7 @@ const PROJECTS = [
   },
   {
     id: 'lead-enrichment-routing',
+    image: 'assets/projects/lead-enrichment.webp',
     title: 'Lead Enrichment & Sales Routing',
     stack: 'Zapier · Apollo.io · Slack · Gmail',
     logos: ['zapier', 'slack', 'gmail'],

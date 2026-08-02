@@ -165,6 +165,9 @@ PROJECTS.forEach((project) => {
   card.className = 'project-card';
   card.setAttribute('data-reveal', '');
   card.innerHTML = `
+    <div class="project-preview">
+      <img src="${project.image}" alt="${project.title} workflow" loading="lazy" decoding="async">
+    </div>
     <div class="card-flow">${project.logos.map((key) => brandImg(key, 30)).join('')}</div>
     <h3>${project.title}</h3>
     <p class="card-summary">${project.summary}</p>
@@ -212,6 +215,9 @@ function openProjectModal(project) {
   modalBody.innerHTML = `
     <span class="modal-stack">${project.stack}</span>
     <h3 id="modal-title">${project.title}</h3>
+    <figure class="modal-preview">
+      <img src="${project.image}" alt="${project.title} workflow diagram">
+    </figure>
     <div class="flow-diagram">${buildFlowDiagram(project.flow)}</div>
     <div class="case-study">
       <section>
