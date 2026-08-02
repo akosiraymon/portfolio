@@ -14,6 +14,28 @@ function setTheme(dark) {
 themeToggle.addEventListener('click', () => setTheme(!isDark()));
 themeToggle.setAttribute('aria-pressed', String(isDark()));
 
+// ===== Mobile navigation =====
+const menuToggle = document.getElementById('menu-toggle');
+const primaryNav = document.getElementById('primary-nav');
+if (menuToggle && primaryNav) {
+  const closeMenu = () => {
+    primaryNav.classList.remove('is-open');
+    menuToggle.setAttribute('aria-expanded', 'false');
+    menuToggle.setAttribute('aria-label', 'Open navigation menu');
+  };
+
+  menuToggle.addEventListener('click', () => {
+    const isOpen = primaryNav.classList.toggle('is-open');
+    menuToggle.setAttribute('aria-expanded', String(isOpen));
+    menuToggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
+  });
+
+  primaryNav.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeMenu();
+  });
+}
+
 // ===== Profile photo (falls back to initials if no file is present) =====
 const heroAvatar = document.getElementById('hero-avatar');
 (function tryLoadAvatar() {
@@ -146,6 +168,7 @@ PROJECTS.forEach((project) => {
     <div class="card-flow">${project.logos.map((key) => brandImg(key, 30)).join('')}</div>
     <h3>${project.title}</h3>
     <p class="card-summary">${project.summary}</p>
+    <p class="card-proof"><strong>Result</strong><span>${project.outcome}</span></p>
     <p class="card-stack">${project.stack}</p>
   `;
   card.addEventListener('click', () => openProjectModal(project));
