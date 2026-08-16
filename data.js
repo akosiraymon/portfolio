@@ -22,7 +22,7 @@ function iconSvg(name) {
 }
 
 // Real brand marks that the Simple Icons CDN won't serve under their brand
-// guidelines (Slack, LinkedIn) — embedded directly as static vector data instead,
+// guidelines (Slack, LinkedIn), embedded directly as static vector data instead,
 // so no network request is needed and the shape is never in question.
 const VECTOR_LOGOS = {
   slack: '<path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zM18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zM15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/>',
@@ -30,7 +30,7 @@ const VECTOR_LOGOS = {
 };
 
 // ---- Real brand logos (Simple Icons CDN, or embedded vector data above) ----
-// Each entry: { name, slug, hex, fallback } — name is the display label, hex tints
+// Each entry: { name, slug, hex, fallback }. Name is the display label, hex tints
 // the mark to its brand color, fallback is a generic ICONS key used only if a CDN
 // image genuinely fails to load.
 const BRANDS = {
@@ -86,7 +86,7 @@ const PROJECTS = [
     id: 'voice-receptionist',
     image: 'assets/projects/voice-receptionist.webp',
     title: 'AI Voice Receptionist & Appointment Scheduling',
-    stack: 'n8n · Vapi · Google Calendar · Airtable',
+    stack: 'n8n / Vapi / Google Calendar / Airtable',
     logos: ['n8n', 'googlecalendar', 'airtable'],
     summary: 'A voice agent that books, checks, and cancels appointments over the phone.',
     problem: 'Small service businesses lose bookings when no one is free to pick up the phone, and manual scheduling means double-bookings and back-and-forth calls.',
@@ -98,7 +98,7 @@ const PROJECTS = [
     id: 'fb-support-agent',
     image: 'assets/projects/fb-support-agent.webp',
     title: 'AI Facebook Page Customer Support Agent',
-    stack: 'n8n · Google Gemini · Webhooks',
+    stack: 'n8n / Google Gemini / Webhooks',
     logos: ['n8n', 'facebook'],
     summary: 'Answers Facebook Page messages automatically using a live FAQ doc as context.',
     problem: 'Monitoring Facebook Page messages all day is tedious, and simple repeated questions (hours, pricing, location) shouldn\'t need a person every time.',
@@ -110,11 +110,11 @@ const PROJECTS = [
     id: 'job-application-automation',
     image: 'assets/projects/job-application.webp',
     title: 'AI Job Application Automation',
-    stack: 'n8n · Slack · OpenRouter · Gmail',
+    stack: 'n8n / Slack / OpenRouter / Gmail',
     logos: ['n8n', 'slack', 'gmail'],
     summary: 'Turns a Slack message into a tailored resume and a ready-to-send email draft.',
     problem: 'Rewriting a resume for every job posting is repetitive and eats time that could go toward actually applying.',
-    solution: 'A Slack-triggered workflow takes a job search query, pulls matching listings via API, and uses an OpenRouter LLM with a structured output parser to tailor resume content to each posting — then handles the copy, edits, and a Gmail draft automatically.',
+    solution: 'A Slack-triggered workflow takes a job search query, pulls matching listings via API, and uses an OpenRouter LLM with a structured output parser to tailor resume content to each posting. It then handles the copy, edits, and a Gmail draft automatically.',
     outcome: 'Typical prep time per application dropped from around 30 minutes to a couple of minutes.',
     flow: ['slack', 'search', 'bot', 'drive', 'mail'],
   },
@@ -122,10 +122,10 @@ const PROJECTS = [
     id: 'xero-asana-sheets',
     image: 'assets/projects/xero-asana-sheets.webp',
     title: 'Xero Financial Export → Asana & Sheets Sync',
-    stack: 'Make · Xero API · Asana · Google Sheets',
+    stack: 'Make / Xero API / Asana / Google Sheets',
     logos: ['make', 'xero', 'asana', 'googlesheets'],
     summary: 'Keeps finance records updated automatically when a task is marked done.',
-    problem: 'Finance teams were manually pulling transaction data into spreadsheets every week — an easy step to forget and easy to get wrong.',
+    problem: 'Finance teams were manually pulling transaction data into spreadsheets every week. It was an easy step to forget and easy to get wrong.',
     solution: 'Watches for completed tasks in Asana, pulls transaction data from Xero via API, then splits the data down two paths: one logs each row to Google Sheets, the other builds a summary report attached back to the Asana task.',
     outcome: 'The finance team gets updated records without opening a spreadsheet themselves.',
     flow: ['branch', 'globe', 'sheet', 'receipt'],
@@ -134,7 +134,7 @@ const PROJECTS = [
     id: 'gmail-attachment-sorter',
     image: 'assets/projects/gmail-attachment-sorter.webp',
     title: 'Gmail Attachment Sorter & Logger',
-    stack: 'Make · Gmail · Google Drive · Sheets · AI',
+    stack: 'Make / Gmail / Google Drive / Sheets / AI',
     logos: ['make', 'gmail', 'googledrive', 'googlesheets'],
     summary: 'Renames and files email attachments without anyone touching them.',
     problem: 'Incoming files from clients tend to land with unhelpful names ("scan001.pdf") and pile up unsorted in an inbox.',
@@ -146,7 +146,7 @@ const PROJECTS = [
     id: 'content-repurposing',
     image: 'assets/projects/content-repurposing.webp',
     title: 'Automated Content Repurposing & Publishing',
-    stack: 'Zapier · Google Drive · Facebook · LinkedIn',
+    stack: 'Zapier / Google Drive / Facebook / LinkedIn',
     logos: ['zapier', 'googledrive', 'facebook', 'linkedin'],
     summary: 'One video upload becomes a blog post and two social posts.',
     problem: 'Turning a single recorded video or audio clip into written content for multiple platforms is repetitive, manual work that often gets skipped.',
@@ -158,7 +158,7 @@ const PROJECTS = [
     id: 'asana-lead-followup',
     image: 'assets/projects/asana-lead-followup.webp',
     title: 'Asana CRM Lead Engagement & Follow-Up',
-    stack: 'Zapier · Asana · Gmail · Google Drive',
+    stack: 'Zapier / Asana / Gmail / Google Drive',
     logos: ['zapier', 'asana', 'gmail', 'googledrive'],
     summary: 'Routes leads through the right follow-up email automatically as their status changes.',
     problem: 'Sales follow-ups slip through the cracks when they depend on someone remembering to send the next email at the right time.',
@@ -170,7 +170,7 @@ const PROJECTS = [
     id: 'lead-enrichment-routing',
     image: 'assets/projects/lead-enrichment.webp',
     title: 'Lead Enrichment & Sales Routing',
-    stack: 'Zapier · Apollo.io · Slack · Gmail',
+    stack: 'Zapier / Apollo.io / Slack / Gmail',
     logos: ['zapier', 'slack', 'gmail'],
     summary: 'Scores and routes new leads the moment they submit a form.',
     problem: 'Not every inbound lead deserves the same amount of attention right away, but figuring out which ones matter most usually happens manually, after the fact.',

@@ -162,8 +162,9 @@ const grid = document.getElementById('project-grid');
 PROJECTS.forEach((project) => {
   const card = document.createElement('button');
   card.type = 'button';
-  card.className = 'project-card';
+  card.className = 'project-card magnify-panel';
   card.setAttribute('data-reveal', '');
+  card.setAttribute('data-magnify', '');
   card.innerHTML = `
     <div class="project-preview">
       <img src="${project.image}" alt="${project.title} workflow" loading="lazy" decoding="async">
@@ -188,6 +189,34 @@ if ('IntersectionObserver' in window && !prefersReducedMotion) {
   document.querySelectorAll('.project-card[data-reveal]').forEach((el) => cardObserver.observe(el));
 } else {
   document.querySelectorAll('.project-card[data-reveal]').forEach((el) => el.classList.add('is-visible'));
+}
+
+// ===== Cursor-position magnification for content surfaces =====
+if (supportsFinePointer && !prefersReducedMotion) {
+  document.querySelectorAll('[data-magnify]').forEach((surface) => {
+    const setLensPosition = (event) => {
+      const rect = surface.getBoundingClientRect();
+      const x = Math.max(0, Math.min(event.clientX - rect.left, rect.width));
+      const y = Math.max(0, Math.min(event.clientY - rect.top, rect.height));
+      surface.style.setProperty('--lens-x', `${x}px`);
+      surface.style.setProperty('--lens-y', `${y}px`);
+      surface.classList.add('is-magnifying');
+      if (cursorRing) cursorRing.classList.add('is-hovering');
+    };
+
+    surface.addEventListener('pointerenter', (event) => {
+      setLensPosition(event);
+    });
+    surface.addEventListener('pointermove', setLensPosition);
+    surface.addEventListener('pointerleave', () => {
+      surface.classList.remove('is-magnifying');
+      if (cursorRing) cursorRing.classList.remove('is-hovering');
+    });
+    surface.addEventListener('focusin', () => {
+      surface.style.setProperty('--lens-x', '50%');
+      surface.style.setProperty('--lens-y', '50%');
+    });
+  });
 }
 
 // ===== Modal =====
@@ -295,7 +324,7 @@ form.addEventListener('submit', async (e) => {
     });
     const result = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(result.message || 'Request failed');
-    statusEl.textContent = result.message || "Thanks — I'll get back to you soon.";
+    statusEl.textContent = "Thanks. I'll get back to you soon.";
     statusEl.className = 'form-status ok';
     form.reset();
   } catch (err) {
