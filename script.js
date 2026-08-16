@@ -1,5 +1,5 @@
-// Change this to the real n8n Production Webhook URL once the workflow is activated.
-const CONTACT_FORM_ENDPOINT = 'https://n8n-racastano.onrender.com/webhook/portfolio-contact';
+// Production n8n webhook for portfolio contact submissions.
+const CONTACT_FORM_ENDPOINT = 'https://n8n-fbbj.srv1906418.hstgr.cloud/webhook/portfolio-contact';
 
 document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -264,6 +264,14 @@ form.addEventListener('submit', async (e) => {
   e.preventDefault();
   statusEl.textContent = '';
   statusEl.className = 'form-status';
+
+  if (!form.checkValidity()) {
+    form.reportValidity();
+    statusEl.textContent = 'Please complete the required fields.';
+    statusEl.className = 'form-status err';
+    return;
+  }
+
   submitBtn.disabled = true;
 
   const payload = {
@@ -272,22 +280,31 @@ form.addEventListener('submit', async (e) => {
     email: form.email.value.trim(),
     phone: form.phone.value.trim(),
     message: form.message.value.trim(),
+    website: form.website.value.trim(),
   };
+
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort(), 15000);
 
   try {
     const res = await fetch(CONTACT_FORM_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
+      signal: controller.signal,
     });
-    if (!res.ok) throw new Error('Request failed');
-    statusEl.textContent = "Thanks — I'll get back to you soon.";
+    const result = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(result.message || 'Request failed');
+    statusEl.textContent = result.message || "Thanks — I'll get back to you soon.";
     statusEl.className = 'form-status ok';
     form.reset();
   } catch (err) {
-    statusEl.textContent = 'Something went wrong sending that. Please email me directly instead.';
+    statusEl.textContent = err.name === 'AbortError'
+      ? 'Sending took too long. Please try again.'
+      : err.message || 'Something went wrong sending that. Please email me directly instead.';
     statusEl.className = 'form-status err';
   } finally {
+    window.clearTimeout(timeoutId);
     submitBtn.disabled = false;
   }
 });

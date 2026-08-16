@@ -279,6 +279,7 @@ body.glow-active .page-glow { opacity: 1; }
 .form-status { font-size: 0.9rem; min-height: 1.2em; }
 .form-status.ok { color: #1F9D55; }
 .form-status.err { color: #E5484D; }
+.hp-field { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 
 .contact-side { display: flex; flex-direction: column; gap: 20px; }
 .calendly-inline-widget { border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border); background: var(--surface); }
