@@ -203,12 +203,7 @@ body.glow-active .page-glow { opacity: 1; }
 /* ===== About ===== */
 .about-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: start; }
 .about-copy { color: var(--text-secondary); font-size: 1.05rem; }
-.about-panel {
-  min-height: 100%; padding: 24px; background: var(--surface);
-  border: 1px solid var(--border); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);
-}
 .skill-pills { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
-.skill-pills.about-panel { padding: 24px; }
 .skill-pills li {
   font-size: 0.85rem; font-weight: 500; padding: 8px 14px; border-radius: 999px;
   background: var(--surface-2); border: 1px solid var(--border); color: var(--text-secondary);
