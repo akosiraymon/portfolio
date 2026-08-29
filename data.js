@@ -48,6 +48,8 @@ const BRANDS = {
   facebook: { name: 'Facebook', slug: 'facebook', hex: '1877F2', fallback: 'chat' },
   linkedin: { name: 'LinkedIn', hex: '0A66C2', vector: 'linkedin' },
   openai: { name: 'OpenAI', slug: 'openai', hex: '412991', fallback: 'bot' },
+  hubspot: { name: 'HubSpot', slug: 'hubspot', hex: 'FF7A59', fallback: 'database' },
+  gemini: { name: 'Google Gemini', slug: 'googlegemini', hex: '8E75B2', fallback: 'bot' },
 };
 
 // Maps generic modal-diagram step keys to a real brand logo, where one clearly applies.
@@ -59,6 +61,8 @@ const STEP_BRAND_MAP = {
   slack: 'slack',
   receipt: 'xero',
   database: 'airtable',
+  hubspot: 'hubspot',
+  gemini: 'gemini',
 };
 
 function brandImg(brandKey, size) {
@@ -83,8 +87,41 @@ const TOOLS_MARQUEE = ['n8n', 'zapier', 'make', 'slack', 'gmail', 'googlecalenda
 // ---- Projects ----
 const PROJECTS = [
   {
+    id: 'ai-lead-qualification-crm',
+    image: '/assets/projects/ai-lead-qualification-workflow.png',
+    gallery: [
+      {
+        src: '/assets/projects/ai-lead-qualification-workflow.png',
+        alt: 'n8n workflow for AI-powered lead qualification and CRM follow-up',
+        caption: 'The production workflow validates, qualifies, enriches, responds, and alerts.',
+      },
+      {
+        src: '/assets/projects/ai-lead-qualification-overview.png',
+        alt: 'Lead capture, HubSpot enrichment, and Slack sales alert overview',
+        caption: 'From enquiry to a sales-ready lead record in seconds.',
+      },
+    ],
+    title: 'AI-Powered Lead Qualification & CRM Follow-Up System',
+    stack: 'n8n / HubSpot / Google Gemini / Gmail / Slack',
+    logos: ['n8n', 'hubspot', 'gemini', 'gmail', 'slack'],
+    summary: 'Qualifies inbound leads, enriches HubSpot, replies instantly, and alerts sales about high-priority opportunities.',
+    problem: 'Service businesses often receive enquiries through forms but still review, qualify, enter, and follow up with every lead manually. That creates slow response times, inconsistent CRM data, missed high-value prospects, and unnecessary work.',
+    solution: 'Built an automated lead-processing system that validates each submission, filters spam and duplicates, creates or updates the HubSpot contact, applies a deterministic qualification score, and uses Gemini to interpret and summarize the enquiry. The workflow then updates HubSpot with the score and context, sends an immediate confirmation email, and alerts the sales team in Slack when a lead needs fast attention.',
+    outcome: 'Leads are captured, qualified, enriched, responded to, and delivered to sales in seconds instead of hours.',
+    impact: [
+      'Faster response to new enquiries',
+      'Less manual CRM data entry',
+      'Consistent, auditable lead qualification',
+      'High-value opportunities surfaced immediately',
+      'Cleaner customer records with richer context',
+      'Instant confirmation for every prospect',
+    ],
+    rationale: 'The core lead score uses deterministic JavaScript rules so every qualification decision stays predictable, auditable, and under business control. Gemini interprets and summarizes the enquiry, but it does not decide the lead priority.',
+    flow: ['form', 'filter', 'hubspot', 'gemini', 'mail', 'slack'],
+  },
+  {
     id: 'voice-receptionist',
-    image: 'assets/projects/voice-receptionist.webp',
+    image: '/assets/projects/voice-receptionist.webp',
     title: 'AI Voice Receptionist & Appointment Scheduling',
     stack: 'n8n / Vapi / Google Calendar / Airtable',
     logos: ['n8n', 'googlecalendar', 'airtable'],
@@ -96,7 +133,7 @@ const PROJECTS = [
   },
   {
     id: 'fb-support-agent',
-    image: 'assets/projects/fb-support-agent.webp',
+    image: '/assets/projects/fb-support-agent.webp',
     title: 'AI Facebook Page Customer Support Agent',
     stack: 'n8n / Google Gemini / Webhooks',
     logos: ['n8n', 'facebook'],
@@ -108,7 +145,7 @@ const PROJECTS = [
   },
   {
     id: 'job-application-automation',
-    image: 'assets/projects/job-application.webp',
+    image: '/assets/projects/job-application.webp',
     title: 'AI Job Application Automation',
     stack: 'n8n / Slack / OpenRouter / Gmail',
     logos: ['n8n', 'slack', 'gmail'],
@@ -120,7 +157,7 @@ const PROJECTS = [
   },
   {
     id: 'xero-asana-sheets',
-    image: 'assets/projects/xero-asana-sheets.webp',
+    image: '/assets/projects/xero-asana-sheets.webp',
     title: 'Xero Financial Export → Asana & Sheets Sync',
     stack: 'Make / Xero API / Asana / Google Sheets',
     logos: ['make', 'xero', 'asana', 'googlesheets'],
@@ -132,7 +169,7 @@ const PROJECTS = [
   },
   {
     id: 'gmail-attachment-sorter',
-    image: 'assets/projects/gmail-attachment-sorter.webp',
+    image: '/assets/projects/gmail-attachment-sorter.webp',
     title: 'Gmail Attachment Sorter & Logger',
     stack: 'Make / Gmail / Google Drive / Sheets / AI',
     logos: ['make', 'gmail', 'googledrive', 'googlesheets'],
@@ -144,7 +181,7 @@ const PROJECTS = [
   },
   {
     id: 'content-repurposing',
-    image: 'assets/projects/content-repurposing.webp',
+    image: '/assets/projects/content-repurposing.webp',
     title: 'Automated Content Repurposing & Publishing',
     stack: 'Zapier / Google Drive / Facebook / LinkedIn',
     logos: ['zapier', 'googledrive', 'facebook', 'linkedin'],
@@ -156,7 +193,7 @@ const PROJECTS = [
   },
   {
     id: 'asana-lead-followup',
-    image: 'assets/projects/asana-lead-followup.webp',
+    image: '/assets/projects/asana-lead-followup.webp',
     title: 'Asana CRM Lead Engagement & Follow-Up',
     stack: 'Zapier / Asana / Gmail / Google Drive',
     logos: ['zapier', 'asana', 'gmail', 'googledrive'],
@@ -168,7 +205,7 @@ const PROJECTS = [
   },
   {
     id: 'lead-enrichment-routing',
-    image: 'assets/projects/lead-enrichment.webp',
+    image: '/assets/projects/lead-enrichment.webp',
     title: 'Lead Enrichment & Sales Routing',
     stack: 'Zapier / Apollo.io / Slack / Gmail',
     logos: ['zapier', 'slack', 'gmail'],

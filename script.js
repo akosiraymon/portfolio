@@ -1,7 +1,8 @@
 // Production n8n webhook for portfolio contact submissions.
 const CONTACT_FORM_ENDPOINT = 'https://n8n-fbbj.srv1906418.hstgr.cloud/webhook/portfolio-contact';
 
-document.getElementById('year').textContent = new Date().getFullYear();
+const yearEl = document.getElementById('year');
+if (yearEl) yearEl.textContent = new Date().getFullYear();
 
 // ===== Dark mode toggle =====
 const themeToggle = document.getElementById('theme-toggle');
@@ -9,10 +10,12 @@ function isDark() { return document.documentElement.classList.contains('dark'); 
 function setTheme(dark) {
   document.documentElement.classList.toggle('dark', dark);
   localStorage.setItem('theme', dark ? 'dark' : 'light');
-  themeToggle.setAttribute('aria-pressed', String(dark));
+  if (themeToggle) themeToggle.setAttribute('aria-pressed', String(dark));
 }
-themeToggle.addEventListener('click', () => setTheme(!isDark()));
-themeToggle.setAttribute('aria-pressed', String(isDark()));
+if (themeToggle) {
+  themeToggle.addEventListener('click', () => setTheme(!isDark()));
+  themeToggle.setAttribute('aria-pressed', String(isDark()));
+}
 
 // ===== Mobile navigation =====
 const menuToggle = document.getElementById('menu-toggle');
@@ -38,8 +41,8 @@ if (menuToggle && primaryNav) {
 
 // ===== Profile photo (falls back to initials if no file is present) =====
 const heroAvatar = document.getElementById('hero-avatar');
-(function tryLoadAvatar() {
-  const candidates = ['profile.webp', 'profile.jpg', 'profile.png', 'profile.jpeg', 'photo.jpg', 'photo.png'];
+if (heroAvatar) (function tryLoadAvatar() {
+  const candidates = ['/profile.webp', '/profile.jpg', '/profile.png', '/profile.jpeg', '/photo.jpg', '/photo.png'];
   let i = 0;
   function tryNext() {
     if (i >= candidates.length) return; // keep initials fallback
@@ -74,11 +77,11 @@ let lastScrollY = window.scrollY;
 function onScroll() {
   const y = window.scrollY;
   const max = document.documentElement.scrollHeight - window.innerHeight;
-  progressBar.style.transform = `scaleX(${max > 0 ? Math.min(y / max, 1) : 0})`;
+  if (progressBar) progressBar.style.transform = `scaleX(${max > 0 ? Math.min(y / max, 1) : 0})`;
 
-  if (y > lastScrollY && y > 120) {
+  if (siteHeader && y > lastScrollY && y > 120) {
     siteHeader.classList.add('header-hidden');
-  } else {
+  } else if (siteHeader) {
     siteHeader.classList.remove('header-hidden');
   }
   lastScrollY = y;
@@ -89,7 +92,7 @@ onScroll();
 // ===== Hero parallax on scroll =====
 const heroGrid = document.getElementById('hero-grid');
 const heroSection = document.getElementById('hero');
-if (heroGrid && !prefersReducedMotion) {
+if (heroGrid && heroSection && !prefersReducedMotion) {
   window.addEventListener('scroll', () => {
     const rect = heroSection.getBoundingClientRect();
     if (rect.bottom < 0 || rect.top > window.innerHeight) return;
@@ -159,7 +162,9 @@ if (marqueeTrack) {
 
 // ===== Project grid =====
 const grid = document.getElementById('project-grid');
-PROJECTS.forEach((project) => {
+if (grid && typeof PROJECTS !== 'undefined') {
+const projectLimit = Number(grid.dataset.limit || PROJECTS.length);
+PROJECTS.slice(0, projectLimit).forEach((project) => {
   const card = document.createElement('button');
   card.type = 'button';
   card.className = 'project-card magnify-panel';
@@ -178,6 +183,7 @@ PROJECTS.forEach((project) => {
   card.addEventListener('click', () => openProjectModal(project));
   grid.appendChild(card);
 });
+}
 
 // Re-run reveal observer for dynamically added cards
 if ('IntersectionObserver' in window && !prefersReducedMotion) {
@@ -240,13 +246,35 @@ function buildFlowDiagram(flow) {
 }
 
 function openProjectModal(project) {
+  if (!modalOverlay || !modalBody || !modalClose) return;
   lastFocusedEl = document.activeElement;
+  const gallery = project.gallery || [{
+    src: project.image,
+    alt: `${project.title} workflow diagram`,
+    caption: '',
+  }];
+  const galleryMarkup = gallery.map((item) => `
+    <figure class="modal-preview">
+      <img src="${item.src}" alt="${item.alt}" loading="eager" decoding="async">
+      ${item.caption ? `<figcaption>${item.caption}</figcaption>` : ''}
+    </figure>
+  `).join('');
+  const impactMarkup = project.impact ? `
+    <section class="case-impact">
+      <h4>Business impact</h4>
+      <ul>${project.impact.map((item) => `<li>${item}</li>`).join('')}</ul>
+    </section>
+  ` : '';
+  const rationaleMarkup = project.rationale ? `
+    <section class="case-rationale">
+      <h4>Why rule-based scoring instead of AI scoring?</h4>
+      <p>${project.rationale}</p>
+    </section>
+  ` : '';
   modalBody.innerHTML = `
     <span class="modal-stack">${project.stack}</span>
     <h3 id="modal-title">${project.title}</h3>
-    <figure class="modal-preview">
-      <img src="${project.image}" alt="${project.title} workflow diagram">
-    </figure>
+    <div class="modal-gallery">${galleryMarkup}</div>
     <div class="flow-diagram">${buildFlowDiagram(project.flow)}</div>
     <div class="case-study">
       <section>
@@ -261,6 +289,8 @@ function openProjectModal(project) {
         <h4>Outcome</h4>
         <p>${project.outcome}</p>
       </section>
+      ${impactMarkup}
+      ${rationaleMarkup}
     </div>
   `;
   modalOverlay.hidden = false;
@@ -270,26 +300,29 @@ function openProjectModal(project) {
 }
 
 function closeProjectModal() {
+  if (!modalOverlay) return;
   modalOverlay.classList.remove('is-open');
   document.body.style.overflow = '';
   setTimeout(() => { modalOverlay.hidden = true; }, 240);
   if (lastFocusedEl) lastFocusedEl.focus();
 }
 
-modalClose.addEventListener('click', closeProjectModal);
-modalOverlay.addEventListener('click', (e) => {
-  if (e.target === modalOverlay) closeProjectModal();
-});
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && !modalOverlay.hidden) closeProjectModal();
-});
+if (modalClose && modalOverlay) {
+  modalClose.addEventListener('click', closeProjectModal);
+  modalOverlay.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) closeProjectModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modalOverlay.hidden) closeProjectModal();
+  });
+}
 
 // ===== Contact form =====
 const form = document.getElementById('contact-form');
 const statusEl = document.getElementById('cf-status');
 const submitBtn = document.getElementById('cf-submit');
 
-form.addEventListener('submit', async (e) => {
+if (form && statusEl && submitBtn) form.addEventListener('submit', async (e) => {
   e.preventDefault();
   statusEl.textContent = '';
   statusEl.className = 'form-status';
