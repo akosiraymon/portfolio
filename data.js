@@ -129,6 +129,13 @@ const PROJECTS = [
     problem: 'Small service businesses lose bookings when no one is free to pick up the phone, and manual scheduling means double-bookings and back-and-forth calls.',
     solution: 'Built a voice AI receptionist backend in n8n with four webhook-based tools (get/book/update/cancel appointment slots) that a voice agent calls mid-conversation. It checks real-time availability against Google Calendar and keeps Airtable in sync with every booking, reschedule, and cancellation, including timezone handling.',
     outcome: 'Callers can book, look up, reschedule, or cancel an appointment without waiting for a human to answer.',
+    impact: [
+      '24/7 appointment booking without requiring front-desk availability',
+      'Fewer missed booking opportunities from unanswered phone calls',
+      'Reduced administrative workload from manual scheduling and follow-ups',
+      'Fewer double-bookings through real-time calendar availability checks',
+      'More scalable appointment handling without increasing staffing requirements',
+    ],
     flow: ['phone', 'webhook', 'calendar', 'database', 'check'],
   },
   {
@@ -141,6 +148,14 @@ const PROJECTS = [
     problem: 'Monitoring Facebook Page messages all day is tedious, and simple repeated questions (hours, pricing, location) shouldn\'t need a person every time.',
     solution: 'A webhook-triggered n8n chatbot picks up incoming Page messages, reads a Google Doc as a live FAQ source, and uses Google Gemini with basic memory to keep replies consistent across a conversation.',
     outcome: 'Common questions get an instant, on-brand reply, and the FAQ doc can be edited without touching the workflow.',
+    impact: [
+      'Near-instant responses that reduce wait time and improve the customer experience',
+      'Less repetitive support work through automated answers from the business FAQ',
+      'More consistent, accurate responses grounded in a centralized Google Docs FAQ',
+      'Scalable Facebook support without increasing the team\'s workload',
+      'Conversation context maintained across messages for a more natural experience',
+      'Less constant Page monitoring so staff can focus on inquiries requiring human judgment',
+    ],
     flow: ['webhook', 'filter', 'doc', 'bot', 'chat'],
   },
   {
