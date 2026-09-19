@@ -131,7 +131,7 @@ html.dark .icon-moon { display: block; }
 .btn-block { width: 100%; }
 
 /* ===== Hero ===== */
-.hero { position: relative; min-height: min(800px, 80vh); padding: clamp(185px, 18vw, 220px) 0 56px; overflow: hidden; }
+.hero { position: relative; min-height: min(800px, 80vh); padding: 145px 0 56px; overflow: hidden; }
 .hero-grid {
   position: absolute; inset: -20% -10% auto -10%; height: 620px;
   background-image: radial-gradient(var(--border) 1px, transparent 1px);
@@ -433,13 +433,13 @@ body.glow-active .page-glow { opacity: 1; }
 .direct-contact a:hover { color: var(--accent); }
 
 @media (max-width: 860px) {
-  .hero { min-height: 0; padding-top: 210px; }
+  .hero { min-height: 0; padding-top: 145px; }
   .contact-grid { grid-template-columns: 1fr; }
   .field-row { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 720px) {
-  .hero { padding-top: 190px; }
+  .hero { padding-top: 145px; }
   .hero h1 { font-size: clamp(2.5rem, 9.4vw, 4rem); }
   .hero-sub { font-size: 1rem; margin-bottom: 24px; }
   .marquee { margin-top: 40px; }
@@ -469,7 +469,7 @@ body.glow-active .page-glow { opacity: 1; }
   .nav-links.is-open { display: flex; }
   .nav-links a { padding: 12px; border-radius: var(--radius-sm); }
   .nav-links a:hover, .nav-links a:focus-visible { background: var(--surface-2); }
-  .hero { padding-top: 175px; }
+  .hero { padding-top: 135px; }
   .hero-role { font-size: 0.8rem; }
   .hero-cta { gap: 10px; flex-wrap: nowrap; }
   .hero-cta .btn { padding: 11px 14px; font-size: 0.88rem; white-space: nowrap; }
