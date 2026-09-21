@@ -255,8 +255,10 @@ function openProjectModal(project) {
   }];
   const galleryMarkup = gallery.map((item) => `
     <figure class="modal-preview">
-      <img src="${item.src}" alt="${item.alt}" loading="eager" decoding="async">
-      ${item.caption ? `<figcaption>${item.caption}</figcaption>` : ''}
+      <a href="${item.src}" target="_blank" rel="noopener noreferrer" aria-label="View full-size image: ${item.title || item.alt}">
+        <img src="${item.src}" alt="${item.alt}" loading="eager" decoding="async">
+      </a>
+      ${item.caption ? `<figcaption>${item.title ? `<strong>${item.title}</strong>` : ''}<span>${item.caption}</span></figcaption>` : ''}
     </figure>
   `).join('');
   const impactMarkup = project.impact ? `

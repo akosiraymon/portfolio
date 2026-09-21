@@ -87,6 +87,51 @@ const TOOLS_MARQUEE = ['n8n', 'zapier', 'make', 'slack', 'gmail', 'googlecalenda
 // ---- Projects ----
 const PROJECTS = [
   {
+    id: 'ai-lead-reactivation-appointments',
+    image: '/assets/projects/lead-reactivation-workflow.png',
+    gallery: [
+      {
+        src: '/assets/projects/lead-reactivation-workflow.png',
+        alt: 'Overview of the n8n lead reactivation and appointment management workflow',
+        title: 'Workflow Overview',
+        caption: 'The n8n workflow connects lead replies, AI classification, Google Sheets, Gmail, and Google Calendar.',
+      },
+      {
+        src: '/assets/projects/appointment-booking-confirmation.png',
+        alt: 'Booking proof showing the confirmed lead record, confirmation email, and Google Calendar appointment',
+        title: 'Booking Confirmation',
+        caption: 'Lead confirms a time → appointment is booked, confirmed by email, and added to the calendar.',
+      },
+      {
+        src: '/assets/projects/appointment-rescheduling.png',
+        alt: 'Rescheduling proof showing the updated lead record, confirmation email, and moved Google Calendar appointment',
+        title: 'Appointment Rescheduling',
+        caption: 'Lead requests a new time → the existing appointment is moved and records are updated automatically.',
+      },
+      {
+        src: '/assets/projects/appointment-cancellation.png',
+        alt: 'Cancellation proof showing the cancelled lead record, confirmation email, and cleared Google Calendar time slot',
+        title: 'Appointment Cancellation',
+        caption: 'Lead cancels → the calendar event is removed and the lead record is updated automatically.',
+      },
+    ],
+    title: 'AI Lead Reactivation & Appointment Management System',
+    stack: 'n8n / Gmail / Google Sheets / Google Calendar / Gemini AI',
+    logos: ['n8n', 'gmail', 'googlesheets', 'googlecalendar', 'gemini'],
+    summary: 'Automates lead follow-ups, appointment booking, rescheduling, and cancellations through email.',
+    problem: 'Old leads are often forgotten, and scheduling appointments manually takes time. Staff have to read emails, check availability, update records, and manage calendar changes themselves.',
+    solution: 'I built an automated system that reads lead replies, understands what they want, manages appointment scheduling, updates the lead record, and keeps Google Calendar in sync.',
+    outcome: 'The system handled the full appointment journey: lead reply → booking → rescheduling → cancellation. Updates were reflected across email, the lead database, and Google Calendar.',
+    impact: [
+      'Less manual follow-up',
+      'Faster lead response',
+      'Fewer scheduling mistakes',
+      'Up-to-date lead records',
+      'Less admin work for sales teams',
+    ],
+    flow: ['mail', 'gemini', 'sheet', 'calendar', 'check'],
+  },
+  {
     id: 'ai-lead-qualification-crm',
     image: '/assets/projects/ai-lead-qualification-workflow.png',
     gallery: [

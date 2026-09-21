@@ -511,8 +511,12 @@ body.glow-active .page-glow { opacity: 1; }
 .modal h3 { font-size: 1.5rem; margin-top: 8px; margin-bottom: 24px; padding-right: 40px; }
 .modal-gallery { display: grid; gap: 16px; margin-bottom: 24px; }
 .modal-preview { margin: 0; overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface-2); }
+.modal-preview a { display: block; cursor: zoom-in; }
+.modal-preview a:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; }
 .modal-preview img { display: block; width: 100%; max-height: 460px; object-fit: contain; }
 .modal-preview figcaption { padding: 10px 14px; border-top: 1px solid var(--border); color: var(--text-tertiary); font-size: 0.78rem; }
+.modal-preview figcaption strong { display: block; margin-bottom: 3px; color: var(--text-primary); font-size: 0.86rem; }
+.modal-preview figcaption span { display: block; }
 
 .flow-diagram { display: flex; align-items: center; gap: 0; overflow-x: auto; padding: 6px 2px 14px; margin-bottom: 28px; }
 .flow-node {
