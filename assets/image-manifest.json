@@ -1,0 +1,100 @@
+{
+  "/assets/projects/ai-lead-qualification-overview.png": {
+    "preview": "/assets/optimized/ai-lead-qualification-overview-1200.webp",
+    "thumbnail": "/assets/optimized/ai-lead-qualification-overview-640.webp",
+    "width": 1200,
+    "height": 600,
+    "thumbnailWidth": 640
+  },
+  "/assets/projects/ai-lead-qualification-workflow.png": {
+    "preview": "/assets/optimized/ai-lead-qualification-workflow-1200.webp",
+    "thumbnail": "/assets/optimized/ai-lead-qualification-workflow-640.webp",
+    "width": 1200,
+    "height": 518,
+    "thumbnailWidth": 640
+  },
+  "/assets/projects/appointment-booking-confirmation.png": {
+    "preview": "/assets/optimized/appointment-booking-confirmation-1200.webp",
+    "thumbnail": "/assets/optimized/appointment-booking-confirmation-640.webp",
+    "width": 1200,
+    "height": 401,
+    "thumbnailWidth": 640
+  },
+  "/assets/projects/appointment-cancellation.png": {
+    "preview": "/assets/optimized/appointment-cancellation-1200.webp",
+    "thumbnail": "/assets/optimized/appointment-cancellation-640.webp",
+    "width": 1200,
+    "height": 400,
+    "thumbnailWidth": 640
+  },
+  "/assets/projects/appointment-rescheduling.png": {
+    "preview": "/assets/optimized/appointment-rescheduling-1200.webp",
+    "thumbnail": "/assets/optimized/appointment-rescheduling-640.webp",
+    "width": 1200,
+    "height": 401,
+    "thumbnailWidth": 640
+  },
+  "/assets/projects/asana-lead-followup.webp": {
+    "preview": "/assets/optimized/asana-lead-followup-1200.webp",
+    "thumbnail": "/assets/optimized/asana-lead-followup-640.webp",
+    "width": 1075,
+    "height": 725,
+    "thumbnailWidth": 640
+  },
+  "/assets/projects/content-repurposing.webp": {
+    "preview": "/assets/optimized/content-repurposing-1200.webp",
+    "thumbnail": "/assets/optimized/content-repurposing-640.webp",
+    "width": 590,
+    "height": 740,
+    "thumbnailWidth": 590
+  },
+  "/assets/projects/fb-support-agent.webp": {
+    "preview": "/assets/optimized/fb-support-agent-1200.webp",
+    "thumbnail": "/assets/optimized/fb-support-agent-640.webp",
+    "width": 1200,
+    "height": 464,
+    "thumbnailWidth": 640
+  },
+  "/assets/projects/gmail-attachment-sorter.webp": {
+    "preview": "/assets/optimized/gmail-attachment-sorter-1200.webp",
+    "thumbnail": "/assets/optimized/gmail-attachment-sorter-640.webp",
+    "width": 1200,
+    "height": 182,
+    "thumbnailWidth": 640
+  },
+  "/assets/projects/job-application.webp": {
+    "preview": "/assets/optimized/job-application-1200.webp",
+    "thumbnail": "/assets/optimized/job-application-640.webp",
+    "width": 1200,
+    "height": 155,
+    "thumbnailWidth": 640
+  },
+  "/assets/projects/lead-enrichment.webp": {
+    "preview": "/assets/optimized/lead-enrichment-1200.webp",
+    "thumbnail": "/assets/optimized/lead-enrichment-640.webp",
+    "width": 530,
+    "height": 750,
+    "thumbnailWidth": 530
+  },
+  "/assets/projects/lead-reactivation-workflow.png": {
+    "preview": "/assets/optimized/lead-reactivation-workflow-1200.webp",
+    "thumbnail": "/assets/optimized/lead-reactivation-workflow-640.webp",
+    "width": 1137,
+    "height": 578,
+    "thumbnailWidth": 640
+  },
+  "/assets/projects/voice-receptionist.webp": {
+    "preview": "/assets/optimized/voice-receptionist-1200.webp",
+    "thumbnail": "/assets/optimized/voice-receptionist-640.webp",
+    "width": 1050,
+    "height": 671,
+    "thumbnailWidth": 640
+  },
+  "/assets/projects/xero-asana-sheets.webp": {
+    "preview": "/assets/optimized/xero-asana-sheets-1200.webp",
+    "thumbnail": "/assets/optimized/xero-asana-sheets-640.webp",
+    "width": 1200,
+    "height": 307,
+    "thumbnailWidth": 640
+  }
+}

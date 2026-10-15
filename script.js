@@ -1,374 +1,197 @@
-// Production n8n webhook for portfolio contact submissions.
-const CONTACT_FORM_ENDPOINT = 'https://n8n-fbbj.srv1906418.hstgr.cloud/webhook/portfolio-contact';
+import { contactPayload, validateContact, sendContact, isLocalPreview } from './contact.js';
 
-const yearEl = document.getElementById('year');
-if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-// ===== Dark mode toggle =====
-const themeToggle = document.getElementById('theme-toggle');
-function isDark() { return document.documentElement.classList.contains('dark'); }
-function setTheme(dark) {
-  document.documentElement.classList.toggle('dark', dark);
-  localStorage.setItem('theme', dark ? 'dark' : 'light');
-  if (themeToggle) themeToggle.setAttribute('aria-pressed', String(dark));
-}
-if (themeToggle) {
-  themeToggle.addEventListener('click', () => setTheme(!isDark()));
-  themeToggle.setAttribute('aria-pressed', String(isDark()));
-}
-
-// ===== Mobile navigation =====
-const menuToggle = document.getElementById('menu-toggle');
-const primaryNav = document.getElementById('primary-nav');
-if (menuToggle && primaryNav) {
-  const closeMenu = () => {
-    primaryNav.classList.remove('is-open');
-    menuToggle.setAttribute('aria-expanded', 'false');
-    menuToggle.setAttribute('aria-label', 'Open navigation menu');
-  };
-
-  menuToggle.addEventListener('click', () => {
-    const isOpen = primaryNav.classList.toggle('is-open');
-    menuToggle.setAttribute('aria-expanded', String(isOpen));
-    menuToggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
-  });
-
-  primaryNav.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') closeMenu();
-  });
-}
-
-// ===== Profile photo (falls back to initials if no file is present) =====
-const heroAvatar = document.getElementById('hero-avatar');
-if (heroAvatar) (function tryLoadAvatar() {
-  const candidates = ['/profile.webp', '/profile.jpg', '/profile.png', '/profile.jpeg', '/photo.jpg', '/photo.png'];
-  let i = 0;
-  function tryNext() {
-    if (i >= candidates.length) return; // keep initials fallback
-    const img = new Image();
-    img.onload = () => { heroAvatar.innerHTML = ''; heroAvatar.appendChild(img); };
-    img.onerror = () => { i += 1; tryNext(); };
-    img.alt = 'Raymon Castano';
-    img.src = candidates[i];
-  }
-  tryNext();
-})();
-
-// ===== Scroll reveal (replays both scrolling down and back up) =====
-const revealEls = document.querySelectorAll('[data-reveal]');
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-if ('IntersectionObserver' in window && !prefersReducedMotion) {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      entry.target.classList.toggle('is-visible', entry.isIntersecting);
-    });
-  }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
-  revealEls.forEach((el) => observer.observe(el));
-} else {
-  revealEls.forEach((el) => el.classList.add('is-visible'));
-}
-
-// ===== Scroll progress bar + header hide/show on direction =====
-const progressBar = document.getElementById('scroll-progress');
-const siteHeader = document.getElementById('site-header');
-let lastScrollY = window.scrollY;
-
-function onScroll() {
-  const y = window.scrollY;
-  const max = document.documentElement.scrollHeight - window.innerHeight;
-  if (progressBar) progressBar.style.transform = `scaleX(${max > 0 ? Math.min(y / max, 1) : 0})`;
-
-  if (siteHeader && y > lastScrollY && y > 120) {
-    siteHeader.classList.add('header-hidden');
-  } else if (siteHeader) {
-    siteHeader.classList.remove('header-hidden');
-  }
-  lastScrollY = y;
-}
-window.addEventListener('scroll', onScroll, { passive: true });
-onScroll();
-
-// ===== Hero parallax on scroll =====
-const heroGrid = document.getElementById('hero-grid');
-const heroSection = document.getElementById('hero');
-if (heroGrid && heroSection && !prefersReducedMotion) {
-  window.addEventListener('scroll', () => {
-    const rect = heroSection.getBoundingClientRect();
-    if (rect.bottom < 0 || rect.top > window.innerHeight) return;
-    heroGrid.style.transform = `translateY(${window.scrollY * 0.12}px)`;
-  }, { passive: true });
-}
-
-// ===== Mouse-tracking cursor + hero spotlight =====
-const cursorDot = document.getElementById('cursor-dot');
-const cursorRing = document.getElementById('cursor-ring');
-const supportsFinePointer = window.matchMedia('(pointer: fine)').matches;
-
-if (supportsFinePointer && !prefersReducedMotion) {
-  document.body.classList.add('has-custom-cursor');
-  let ringX = window.innerWidth / 2, ringY = window.innerHeight / 2;
-  let targetX = ringX, targetY = ringY;
-
-  document.addEventListener('mousemove', (e) => {
-    targetX = e.clientX; targetY = e.clientY;
-    cursorDot.style.left = `${e.clientX}px`;
-    cursorDot.style.top = `${e.clientY}px`;
-    cursorDot.classList.add('is-active');
-    cursorRing.classList.add('is-active');
-  });
-  document.addEventListener('mouseleave', () => {
-    cursorDot.classList.remove('is-active');
-    cursorRing.classList.remove('is-active');
-  });
-  document.querySelectorAll('a, button, .project-card, input, textarea').forEach((el) => {
-    el.addEventListener('mouseenter', () => cursorRing.classList.add('is-hovering'));
-    el.addEventListener('mouseleave', () => cursorRing.classList.remove('is-hovering'));
-  });
-
-  function animateRing() {
-    ringX += (targetX - ringX) * 0.18;
-    ringY += (targetY - ringY) * 0.18;
-    cursorRing.style.left = `${ringX}px`;
-    cursorRing.style.top = `${ringY}px`;
-    requestAnimationFrame(animateRing);
-  }
-  animateRing();
-}
-
-// Cursor-following glow across the whole page (fixed layer uses viewport coords)
-const pageGlow = document.getElementById('page-glow');
-if (pageGlow && supportsFinePointer && !prefersReducedMotion) {
-  document.addEventListener('mousemove', (e) => {
-    pageGlow.style.setProperty('--gx', `${e.clientX}px`);
-    pageGlow.style.setProperty('--gy', `${e.clientY}px`);
-    document.body.classList.add('glow-active');
-  });
-  document.addEventListener('mouseleave', () => {
-    document.body.classList.remove('glow-active');
-  });
-}
-
-// ===== Hero tools marquee =====
-const marqueeTrack = document.getElementById('marquee-track');
-if (marqueeTrack) {
-  const items = TOOLS_MARQUEE.map((key) => {
-    const b = BRANDS[key];
-    return `<span class="marquee-item">${brandImg(key, 20)}${b.name}</span>`;
-  }).join('');
-  // duplicated once for a seamless CSS-driven loop
-  marqueeTrack.innerHTML = items + items;
-}
-
-// ===== Project grid =====
-const grid = document.getElementById('project-grid');
-if (grid && typeof PROJECTS !== 'undefined') {
-const projectLimit = Number(grid.dataset.limit || PROJECTS.length);
-PROJECTS.slice(0, projectLimit).forEach((project) => {
-  const card = document.createElement('button');
-  card.type = 'button';
-  card.className = 'project-card magnify-panel';
-  card.setAttribute('data-reveal', '');
-  card.setAttribute('data-magnify', '');
-  card.innerHTML = `
-    <div class="project-preview">
-      <img src="${project.image}" alt="${project.title} workflow" loading="lazy" decoding="async">
-    </div>
-    <div class="card-flow">${project.logos.map((key) => brandImg(key, 30)).join('')}</div>
-    <h3>${project.title}</h3>
-    <p class="card-summary">${project.summary}</p>
-    <p class="card-proof"><strong>Result</strong><span>${project.outcome}</span></p>
-    <p class="card-stack">${project.stack}</p>
-  `;
-  card.addEventListener('click', () => openProjectModal(project));
-  grid.appendChild(card);
+document.documentElement.classList.add('js');
+const toolStrip = document.querySelector('.tool-strip');
+const toolsPause = document.querySelector('.tools-pause');
+toolsPause.hidden = false;
+toolsPause.addEventListener('click', () => {
+  const paused = toolStrip.classList.toggle('is-paused');
+  toolsPause.setAttribute('aria-pressed', String(paused));
+  toolsPause.textContent = paused ? 'Resume tools' : 'Pause tools';
 });
-}
-
-// Re-run reveal observer for dynamically added cards
-if ('IntersectionObserver' in window && !prefersReducedMotion) {
-  const cardObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      entry.target.classList.toggle('is-visible', entry.isIntersecting);
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.project-card[data-reveal]').forEach((el) => cardObserver.observe(el));
-} else {
-  document.querySelectorAll('.project-card[data-reveal]').forEach((el) => el.classList.add('is-visible'));
-}
-
-// ===== Cursor-position magnification for content surfaces =====
-if (supportsFinePointer && !prefersReducedMotion) {
-  document.querySelectorAll('[data-magnify]').forEach((surface) => {
-    const setLensPosition = (event) => {
-      const rect = surface.getBoundingClientRect();
-      const x = Math.max(0, Math.min(event.clientX - rect.left, rect.width));
-      const y = Math.max(0, Math.min(event.clientY - rect.top, rect.height));
-      surface.style.setProperty('--lens-x', `${x}px`);
-      surface.style.setProperty('--lens-y', `${y}px`);
-      surface.classList.add('is-magnifying');
-      if (cursorRing) cursorRing.classList.add('is-hovering');
-    };
-
-    surface.addEventListener('pointerenter', (event) => {
-      setLensPosition(event);
-    });
-    surface.addEventListener('pointermove', setLensPosition);
-    surface.addEventListener('pointerleave', () => {
-      surface.classList.remove('is-magnifying');
-      if (cursorRing) cursorRing.classList.remove('is-hovering');
-    });
-    surface.addEventListener('focusin', () => {
-      surface.style.setProperty('--lens-x', '50%');
-      surface.style.setProperty('--lens-y', '50%');
+const pointerMotion = window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
+document.querySelectorAll('.hero-portrait, .project-image').forEach((surface) => {
+  let frame;
+  const reset = () => {
+    cancelAnimationFrame(frame);
+    surface.style.removeProperty('--pointer-x');
+    surface.style.removeProperty('--pointer-y');
+  };
+  surface.addEventListener('pointermove', (event) => {
+    if (!pointerMotion.matches) return;
+    cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(() => {
+      const bounds = surface.getBoundingClientRect();
+      surface.style.setProperty('--pointer-x', `${((event.clientX - bounds.left) / bounds.width - .5) * 6}px`);
+      surface.style.setProperty('--pointer-y', `${((event.clientY - bounds.top) / bounds.height - .5) * 6}px`);
     });
   });
+  surface.addEventListener('pointerleave', reset);
+  pointerMotion.addEventListener('change', reset);
+});
+const menuToggle = document.querySelector('.menu-toggle');
+const navigation = document.querySelector('#primary-nav');
+function closeMenu(restoreFocus = false) {
+  navigation.classList.remove('is-open');
+  menuToggle.setAttribute('aria-expanded','false');
+  menuToggle.querySelector('span').textContent = '+';
+  if (restoreFocus) menuToggle.focus();
+}
+menuToggle.addEventListener('click', () => {
+  const open = navigation.classList.toggle('is-open');
+  menuToggle.setAttribute('aria-expanded',String(open));
+  menuToggle.querySelector('span').textContent = open ? '−' : '+';
+});
+navigation.addEventListener('click', (event) => {
+  if (event.target.closest('a')) closeMenu();
+});
+document.addEventListener('click', (event) => {
+  if (!event.target.closest('.site-header')) closeMenu();
+});
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && navigation.classList.contains('is-open')) closeMenu(true);
+});
+window.matchMedia('(min-width: 701px)').addEventListener('change', () => closeMenu());
+if ('IntersectionObserver' in window) {
+  const sectionObserver = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      navigation.querySelectorAll('a[href^="#"]').forEach((link) => {
+        if (link.hash === `#${entry.target.id}`) link.setAttribute('aria-current','location');
+        else link.removeAttribute('aria-current');
+      });
+    }
+  }, {rootMargin:'-15% 0px -60% 0px'});
+  document.querySelectorAll('main>section[id]').forEach((section) => sectionObserver.observe(section));
 }
 
-// ===== Modal =====
-const modalOverlay = document.getElementById('project-modal');
-const modalBody = document.getElementById('modal-body');
-const modalClose = document.getElementById('modal-close');
-let lastFocusedEl = null;
-
-function buildFlowDiagram(flow) {
-  const arrow = '<svg class="flow-arrow" viewBox="0 0 28 14" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M2 7h20M17 2l6 5-6 5"/></svg>';
-  return flow
-    .map((icon, i) => {
-      const node = `
-        <div class="flow-node">
-          <span class="node-icon-wrap">${stepIcon(icon)}</span>
-          <span class="node-label">${icon.charAt(0).toUpperCase() + icon.slice(1)}</span>
-        </div>`;
-      return i < flow.length - 1 ? node + arrow : node;
-    })
-    .join('');
+const dialogs = new Map([...document.querySelectorAll('dialog[data-case]')].map((dialog) => [dialog.dataset.case,dialog]));
+let currentDialog = null;
+let returnFocus = null;
+let returnHash = '#work';
+function closeVisibleDialog() {
+  if (!currentDialog) return;
+  currentDialog.close();
+  currentDialog = null;
+  document.body.classList.remove('dialog-open');
+  if (returnFocus?.isConnected) returnFocus.focus({preventScroll:true});
 }
-
-function openProjectModal(project) {
-  if (!modalOverlay || !modalBody || !modalClose) return;
-  lastFocusedEl = document.activeElement;
-  const gallery = project.gallery || [{
-    src: project.image,
-    alt: `${project.title} workflow diagram`,
-    caption: '',
-  }];
-  const galleryMarkup = gallery.map((item) => `
-    <figure class="modal-preview">
-      <a href="${item.src}" target="_blank" rel="noopener noreferrer" aria-label="View full-size image: ${item.title || item.alt}">
-        <img src="${item.src}" alt="${item.alt}" loading="eager" decoding="async">
-      </a>
-      ${item.caption ? `<figcaption>${item.title ? `<strong>${item.title}</strong>` : ''}<span>${item.caption}</span></figcaption>` : ''}
-    </figure>
-  `).join('');
-  const impactMarkup = project.impact ? `
-    <section class="case-impact">
-      <h4>Business impact</h4>
-      <ul>${project.impact.map((item) => `<li>${item}</li>`).join('')}</ul>
-    </section>
-  ` : '';
-  const rationaleMarkup = project.rationale ? `
-    <section class="case-rationale">
-      <h4>Why rule-based scoring instead of AI scoring?</h4>
-      <p>${project.rationale}</p>
-    </section>
-  ` : '';
-  modalBody.innerHTML = `
-    <span class="modal-stack">${project.stack}</span>
-    <h3 id="modal-title">${project.title}</h3>
-    <div class="modal-gallery">${galleryMarkup}</div>
-    <div class="flow-diagram">${buildFlowDiagram(project.flow)}</div>
-    <div class="case-study">
-      <section>
-        <h4>The problem</h4>
-        <p>${project.problem}</p>
-      </section>
-      <section>
-        <h4>What I built</h4>
-        <p>${project.solution}</p>
-      </section>
-      <section>
-        <h4>Outcome</h4>
-        <p>${project.outcome}</p>
-      </section>
-      ${impactMarkup}
-      ${rationaleMarkup}
-    </div>
-  `;
-  modalOverlay.hidden = false;
-  requestAnimationFrame(() => modalOverlay.classList.add('is-open'));
-  modalClose.focus();
-  document.body.style.overflow = 'hidden';
-}
-
-function closeProjectModal() {
-  if (!modalOverlay) return;
-  modalOverlay.classList.remove('is-open');
-  document.body.style.overflow = '';
-  setTimeout(() => { modalOverlay.hidden = true; }, 240);
-  if (lastFocusedEl) lastFocusedEl.focus();
-}
-
-if (modalClose && modalOverlay) {
-  modalClose.addEventListener('click', closeProjectModal);
-  modalOverlay.addEventListener('click', (e) => {
-    if (e.target === modalOverlay) closeProjectModal();
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !modalOverlay.hidden) closeProjectModal();
-  });
-}
-
-// ===== Contact form =====
-const form = document.getElementById('contact-form');
-const statusEl = document.getElementById('cf-status');
-const submitBtn = document.getElementById('cf-submit');
-
-if (form && statusEl && submitBtn) form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  statusEl.textContent = '';
-  statusEl.className = 'form-status';
-
-  if (!form.checkValidity()) {
-    form.reportValidity();
-    statusEl.textContent = 'Please complete the required fields.';
-    statusEl.className = 'form-status err';
+function syncProjectHash() {
+  const projectId = location.hash.startsWith('#case-') ? location.hash.slice(6) : null;
+  const dialog = dialogs.get(projectId);
+  if (!dialog) {
+    closeVisibleDialog();
     return;
   }
+  if (currentDialog === dialog) return;
+  closeVisibleDialog();
+  const opener = document.querySelector(`[data-project="${projectId}"]`);
+  const projectList = opener?.closest('details');
+  if (projectList) projectList.open = true;
+  if (!returnFocus || !returnFocus.matches(`[data-project="${projectId}"]`)) returnFocus = opener;
+  currentDialog = dialog;
+  dialog.showModal();
+  dialog.scrollTop = 0;
+  document.body.classList.add('dialog-open');
+}
+function dismissProject() {
+  if (history.state?.project) {
+    history.back();
+  } else {
+    history.replaceState(null,'',`${location.pathname}${location.search}${returnHash}`);
+    closeVisibleDialog();
+  }
+}
+document.querySelectorAll('[data-project]').forEach((link) => {
+  link.addEventListener('click',(event) => {
+    if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button !== 0) return;
+    event.preventDefault();
+    returnFocus = link;
+    returnHash = location.hash.startsWith('#case-') ? '#work' : location.hash || '#work';
+    history.pushState({project:true},'',link.getAttribute('href'));
+    syncProjectHash();
+  });
+});
+for (const dialog of dialogs.values()) {
+  dialog.querySelector('.dialog-close').addEventListener('click',dismissProject);
+  dialog.addEventListener('cancel',(event) => {event.preventDefault();dismissProject();});
+  dialog.addEventListener('click',(event) => {
+    const bounds = dialog.getBoundingClientRect();
+    if (event.target === dialog && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom)) dismissProject();
+  });
+  dialog.querySelector('[data-dialog-contact]').addEventListener('click',(event) => {
+    event.preventDefault();
+    closeVisibleDialog();
+    history.replaceState(null,'',`${location.pathname}${location.search}#contact`);
+    document.querySelector('#contact').scrollIntoView();
+    document.querySelector('#cf-name').focus({preventScroll:true});
+  });
+}
+window.addEventListener('popstate',syncProjectHash);
+window.addEventListener('hashchange',syncProjectHash);
+syncProjectHash();
 
-  submitBtn.disabled = true;
-
-  const payload = {
-    name: form.name.value.trim(),
-    company: form.company.value.trim(),
-    email: form.email.value.trim(),
-    phone: form.phone.value.trim(),
-    message: form.message.value.trim(),
-    website: form.website.value.trim(),
-  };
-
-  const controller = new AbortController();
-  const timeoutId = window.setTimeout(() => controller.abort(), 15000);
-
+const form = document.querySelector('#contact-form');
+const status = document.querySelector('#cf-status');
+const submitButton = document.querySelector('#cf-submit');
+submitButton.disabled = false;
+const errorSummary = document.querySelector('#error-summary');
+const local = isLocalPreview(location.hostname);
+document.querySelector('#local-preview-note').hidden = !local;
+let submitting = false;
+function showErrors(errors) {
+  for (const field of ['name','email']) {
+    const input = form.elements.namedItem(field);
+    document.querySelector(`#error-${field}`).textContent = errors[field] || '';
+    if (errors[field]) input.setAttribute('aria-invalid','true');
+    else input.removeAttribute('aria-invalid');
+  }
+  errorSummary.replaceChildren();
+  errorSummary.hidden = !Object.keys(errors).length;
+  if (errorSummary.hidden) return;
+  const heading = document.createElement('strong');
+  heading.textContent = 'Please check these details:';
+  const list = document.createElement('ul');
+  for (const [field,message] of Object.entries(errors)) {
+    const item = document.createElement('li');
+    const link = document.createElement('a');
+    link.href = `#cf-${field}`;
+    link.textContent = message;
+    link.addEventListener('click',(event) => {event.preventDefault();form.elements.namedItem(field).focus();});
+    item.append(link);
+    list.append(item);
+  }
+  errorSummary.append(heading,list);
+}
+form.addEventListener('input',() => {
+  if (!errorSummary.hidden) showErrors(validateContact(contactPayload(Object.fromEntries(new FormData(form)))));
+});
+form.addEventListener('submit',async (event) => {
+  event.preventDefault();
+  if (submitting) return;
+  status.textContent = '';
+  status.removeAttribute('data-state');
+  const payload = contactPayload(Object.fromEntries(new FormData(form)));
+  const errors = validateContact(payload);
+  showErrors(errors);
+  if (Object.keys(errors).length) {errorSummary.focus();return;}
+  submitting = true;
+  submitButton.disabled = true;
+  submitButton.textContent = 'Sending…';
+  form.setAttribute('aria-busy','true');
+  status.textContent = local ? 'Simulating your message…' : 'Sending your message…';
   try {
-    const res = await fetch(CONTACT_FORM_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-      signal: controller.signal,
-    });
-    const result = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(result.message || 'Request failed');
-    statusEl.textContent = "Thanks. I'll get back to you soon.";
-    statusEl.className = 'form-status ok';
+    const result = await sendContact(payload,{hostname:location.hostname,scenario:new URLSearchParams(location.search).get('form-test') || 'success'});
+    status.textContent = result.simulated ? 'Preview complete. Your message was not sent.' : 'Thanks for reaching out. I’ll reply personally by email.';
+    status.dataset.state = 'success';
     form.reset();
-  } catch (err) {
-    statusEl.textContent = err.name === 'AbortError'
-      ? 'Sending took too long. Please try again.'
-      : err.message || 'Something went wrong sending that. Please email me directly instead.';
-    statusEl.className = 'form-status err';
+  } catch (error) {
+    status.textContent = error.name === 'AbortError' ? 'Sending took too long. Your details are still here—please try again, or email me directly.' : 'Your message could not be sent. Your details are still here—please try again, or email me directly.';
+    status.dataset.state = 'error';
   } finally {
-    window.clearTimeout(timeoutId);
-    submitBtn.disabled = false;
+    submitting = false;
+    submitButton.disabled = false;
+    submitButton.textContent = status.dataset.state === 'error' ? 'Try again ↗' : 'Send message ↗';
+    form.removeAttribute('aria-busy');
   }
 });
