@@ -23,7 +23,7 @@
 - All four legacy routes resolve to the corresponding homepage anchors.
 - Browser form checks: empty required fields show errors; simulated success displays confirmation; submit is disabled while sending; simulated server failure enables retry; the 15-second timeout displays its error, retains entered details and enables retry.
 - Browser console error log: empty during case-study checks.
-- Lighthouse 13.5, mobile simulated run on localhost: Performance 98, Accessibility 100, Best Practices 100, SEO 100. Reports: `artifacts/lighthouse.report.html` and `.json`. These are lab results, not a guarantee of public-hosting performance or full accessibility conformance.
+- Lighthouse 13.5, mobile simulated run on localhost after the animated-header and curtain-footer update: Performance 97, Accessibility 100, Best Practices 100, SEO 100, with a measured cumulative layout shift of 0. Reports: `artifacts/lighthouse.report.html` and `.json`. These are lab results, not a guarantee of public-hosting performance or full accessibility conformance.
 
 ## Remaining limitations before public launch
 
@@ -39,4 +39,6 @@ These results were recorded against the local preview before publication.
 - Header branding changed to RC automation, the portrait caption to AI workflow automation engineer, and the selected-work label to Projects.
 - Project tool names now loop left, with a pause control and static wrapping when reduced motion is requested. Duplicate tool groups are hidden from assistive technology.
 - Gentle pointer-responsive portrait/project-image movement and hover lifts were added on fine-pointer devices only, respecting reduced-motion preferences.
-- Build and all six Node tests pass after these revisions. Browser checks confirmed the updated content, tools animation and pause toggle, with no page overflow at the current desktop viewport. The earlier Lighthouse scores predate these motion changes.
+- The header now morphs into a clipped floating pill after scrolling, with a shared transform-driven navigation indicator, persistent light/dark mode control, and a spring-animated hamburger at narrower widths.
+- Contact and the footer use a fixed curtain reveal on larger motion-enabled viewports, with a normal static reading order on mobile and under reduced motion.
+- Build and all six Node tests pass after these revisions. Browser checks confirmed desktop and mobile navigation, keyboard indicator movement, theme state, direct contact hashes, curtain reveal, and no horizontal overflow.

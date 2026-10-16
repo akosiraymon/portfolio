@@ -26,6 +26,12 @@ test('build preserves all projects, local assets and legacy routes', () => {
   assert.ok(html.includes('RC automation'));
   assert.ok(html.includes('AI workflow automation engineer'));
   assert.ok(html.includes('01 / PROJECTS'));
+  assert.ok(html.includes('class="header-background"'));
+  assert.ok(html.includes('class="nav-indicator"'));
+  assert.ok(html.includes('class="theme-toggle"'));
+  assert.ok(html.includes('class="menu-lines"'));
+  assert.ok(html.includes('class="curtain-footer"'));
+  assert.ok(html.includes('id="contact" class="contact-marker"'));
   assert.ok(!html.includes('<!-- PROJECT_TOOLS -->'));
   const aliases = {'Gemini AI':'Google Gemini', Sheets:'Google Sheets'};
   for (const project of PROJECTS) {

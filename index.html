@@ -14,6 +14,7 @@
   <meta property="og:image" content="https://raymoncastano.com/assets/social-preview.png">
   <meta property="og:image:alt" content="Raymon Castano, freelance automation specialist. Less busywork. More possibility.">
   <meta name="twitter:card" content="summary_large_image">
+  <script>document.documentElement.classList.add('js');try{const theme=localStorage.getItem('portfolio-theme');if(theme)document.documentElement.dataset.theme=theme;else if(matchMedia('(prefers-color-scheme: dark)').matches)document.documentElement.dataset.theme='dark'}catch{}</script>
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="/assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -22,12 +23,17 @@
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
+  <span class="header-sentinel" aria-hidden="true"></span>
   <header class="site-header">
+    <div class="header-background" aria-hidden="true"></div>
     <div class="wrap header-inner">
       <a class="brand" href="#top" aria-label="RC automation, back to top">RC automation<span class="brand-mark" aria-hidden="true">↗</span></a>
-      <button class="menu-toggle" aria-controls="primary-nav" aria-expanded="false" type="button">Menu <span aria-hidden="true">+</span></button>
+      <div class="header-controls">
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark theme"><span class="theme-icon" aria-hidden="true"></span></button>
+        <button class="menu-toggle" aria-controls="primary-nav" aria-expanded="false" aria-label="Open menu" type="button"><span class="menu-lines" aria-hidden="true"><i></i><i></i><i></i></span></button>
+      </div>
       <nav id="primary-nav" aria-label="Primary">
-        <a href="#work">Work</a><a href="#services">Services</a><a href="#about">About</a><a href="#contact">Contact</a>
+        <div class="nav-links"><span class="nav-indicator" aria-hidden="true"></span><a href="#work">Work</a><a href="#services">Services</a><a href="#about">About</a><a href="#contact">Contact</a></div>
         <a class="nav-booking" href="https://calendly.com/castanoraymon/discovery-call" target="_blank" rel="noopener noreferrer">Book a discovery call <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>
       </nav>
     </div>
@@ -66,7 +72,10 @@
       <div class="about-intro"><p class="eyebrow">03 / THE WAY I WORK</p><h2 id="about-title">Thoughtful systems.<br><span>A human approach.</span></h2><p>I’m Raymon, a freelance automation specialist based in Manila. I connect business tools so information moves without anyone having to re-type it.</p><p>Most of my work is in n8n, Make, and Zapier, with a growing focus on AI agents, voice receptionists, and conversational support. My aim is practical: clear inputs, dependable logic, and a workflow your team can understand.</p><a class="text-link" href="https://linkedin.com/in/RAcastano" target="_blank" rel="noopener noreferrer">A little more about me on LinkedIn <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a><ul class="capabilities" aria-label="Technical capabilities"><li>REST APIs</li><li>Webhooks</li><li>AI agents</li><li>Voice AI</li></ul></div>
       <ol class="process-list"><li><span class="process-index">01</span><div><h3>Understand the handoffs.</h3><p>Find where information starts, who needs it, and which manual steps cause delays or mistakes.</p></div></li><li><span class="process-index">02</span><div><h3>Build for the real process.</h3><p>Connect the tools already in use. Keep the logic clear enough for your team to follow and maintain.</p></div></li><li><span class="process-index">03</span><div><h3>Test beyond the happy path.</h3><p>Check incomplete inputs, duplicates, API failures, and timeouts—then make recovery part of the workflow.</p></div></li></ol>
     </section>
-    <section id="contact" class="contact-section section" aria-labelledby="contact-title"><div class="wrap contact-grid">
+    <span id="contact" class="contact-marker" data-section="contact" aria-hidden="true"></span>
+  </main>
+  <footer class="curtain-footer" aria-labelledby="contact-title"><div class="footer-parallax">
+    <section class="contact-section section"><div class="wrap contact-grid">
       <div class="contact-copy"><p class="eyebrow">04 / LET’S CONNECT</p><h2 id="contact-title">What’s taking up<br>too much of<br><span>your time?</span></h2><p>Bring the repetitive task, the messy handoff, or the process you wish worked better. Let’s map it together.</p><a class="button" href="https://calendly.com/castanoraymon/discovery-call" target="_blank" rel="noopener noreferrer">Book a discovery call <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a><div class="direct-contact"><span>Prefer email?</span><a href="mailto:castanoraymon@gmail.com">castanoraymon@gmail.com <span aria-hidden="true">↗</span></a></div></div>
       <form id="contact-form" novalidate><h3>Or tell me about your project.</h3><p class="form-intro">A few details are a good place to start. <span>Required fields are marked *.</span></p><p id="local-preview-note" class="preview-note" hidden>Local preview: messages are simulated and are not sent.</p><div id="error-summary" class="error-summary" tabindex="-1" hidden></div>
         <div class="field-row"><div class="field"><label for="cf-name">Your name *</label><input id="cf-name" name="name" autocomplete="name" maxlength="120" required aria-describedby="error-name"><span id="error-name" class="field-error"></span></div><div class="field"><label for="cf-email">Email address *</label><input id="cf-email" name="email" type="email" autocomplete="email" maxlength="254" required aria-describedby="error-email"><span id="error-email" class="field-error"></span></div></div>
@@ -77,8 +86,8 @@
         <noscript><p>Please <a href="mailto:castanoraymon@gmail.com">email me directly</a> to send your project details.</p></noscript>
       </form>
     </div></section>
-  </main>
-  <footer class="wrap site-footer"><a class="brand" href="#top" aria-label="Raymon Castano, back to top">raymon<span class="brand-mark" aria-hidden="true">↗</span></a><p>© <!-- YEAR --> Raymon Castano<br><span>Thoughtfully connected. Purposefully built.</span></p><a class="text-link" href="#top">Back to top <span aria-hidden="true">↑</span></a></footer>
+    <div class="wrap site-footer"><a class="brand" href="#top" aria-label="Raymon Castano, back to top">raymon<span class="brand-mark" aria-hidden="true">↗</span></a><p>© <!-- YEAR --> Raymon Castano<br><span>Thoughtfully connected. Purposefully built.</span></p><a class="text-link" href="#top">Back to top <span aria-hidden="true">↑</span></a></div>
+  </div></footer>
   <!-- PROJECT_DIALOGS -->
   <noscript><section class="wrap section"><h2>Project case studies</h2><!-- PROJECT_FALLBACKS --></section></noscript>
 </body>

@@ -1,6 +1,26 @@
 import { contactPayload, validateContact, sendContact, isLocalPreview } from './contact.js';
 
 document.documentElement.classList.add('js');
+const siteHeader = document.querySelector('.site-header');
+const headerSentinel = document.querySelector('.header-sentinel');
+new IntersectionObserver(([entry]) => siteHeader.classList.toggle('is-condensed', !entry.isIntersecting)).observe(headerSentinel);
+
+const themeToggle = document.querySelector('.theme-toggle');
+const themeColor = document.querySelector('meta[name="theme-color"]');
+function syncThemeButton() {
+  const dark = document.documentElement.dataset.theme === 'dark';
+  themeToggle.setAttribute('aria-pressed', String(dark));
+  themeToggle.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+  themeColor.content = dark ? '#111715' : '#F7F6F2';
+}
+syncThemeButton();
+themeToggle.addEventListener('click', () => {
+  const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = nextTheme;
+  localStorage.setItem('portfolio-theme', nextTheme);
+  syncThemeButton();
+});
+
 const toolStrip = document.querySelector('.tool-strip');
 const toolsPause = document.querySelector('.tools-pause');
 toolsPause.hidden = false;
@@ -31,19 +51,63 @@ document.querySelectorAll('.hero-portrait, .project-image').forEach((surface) =>
 });
 const menuToggle = document.querySelector('.menu-toggle');
 const navigation = document.querySelector('#primary-nav');
+const navLinks = document.querySelector('.nav-links');
+const navIndicator = document.querySelector('.nav-indicator');
+const indicatorBaseWidth = 48;
+const curtainFooter = document.querySelector('.curtain-footer');
+const contactCurtainIsFixed = () => getComputedStyle(curtainFooter).position === 'fixed';
+function currentNavLink() {
+  return navLinks.querySelector('a[aria-current="location"]');
+}
+function moveNavIndicator(link, visible = true) {
+  if (!link || matchMedia('(max-width: 700px)').matches) {
+    navIndicator.classList.remove('is-visible');
+    return;
+  }
+  navIndicator.style.transform = `translateX(${link.offsetLeft}px) scaleX(${link.offsetWidth / indicatorBaseWidth})`;
+  navIndicator.classList.toggle('is-visible', visible);
+}
+navLinks.addEventListener('pointerenter', (event) => {
+  const link = event.target.closest('a');
+  if (link) moveNavIndicator(link);
+}, true);
+navLinks.addEventListener('focusin', (event) => {
+  const link = event.target.closest('a');
+  if (link) moveNavIndicator(link);
+});
+navLinks.addEventListener('pointerleave', () => moveNavIndicator(currentNavLink(), Boolean(currentNavLink())));
+navLinks.addEventListener('focusout', (event) => {
+  if (!navLinks.contains(event.relatedTarget)) moveNavIndicator(currentNavLink(), Boolean(currentNavLink()));
+});
+window.addEventListener('resize', () => moveNavIndicator(currentNavLink(), Boolean(currentNavLink())));
 function closeMenu(restoreFocus = false) {
   navigation.classList.remove('is-open');
   menuToggle.setAttribute('aria-expanded','false');
-  menuToggle.querySelector('span').textContent = '+';
+  menuToggle.setAttribute('aria-label','Open menu');
   if (restoreFocus) menuToggle.focus();
 }
 menuToggle.addEventListener('click', () => {
   const open = navigation.classList.toggle('is-open');
   menuToggle.setAttribute('aria-expanded',String(open));
-  menuToggle.querySelector('span').textContent = open ? '−' : '+';
+  menuToggle.setAttribute('aria-label',open ? 'Close menu' : 'Open menu');
 });
 navigation.addEventListener('click', (event) => {
-  if (event.target.closest('a')) closeMenu();
+  const link = event.target.closest('a');
+  if (link) {
+    if (link.hash && link.origin === location.origin) {
+      if (link.hash === '#contact' && contactCurtainIsFixed()) {
+        event.preventDefault();
+        if (location.hash !== '#contact') history.pushState(null,'','#contact');
+        scrollTo({top:document.documentElement.scrollHeight,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+      }
+      navLinks.querySelectorAll('a').forEach((item) => {
+        if (item === link) item.setAttribute('aria-current','location');
+        else item.removeAttribute('aria-current');
+      });
+      if (link.closest('.nav-links')) moveNavIndicator(link);
+    }
+    closeMenu();
+  }
 });
 document.addEventListener('click', (event) => {
   if (!event.target.closest('.site-header')) closeMenu();
@@ -57,12 +121,32 @@ if ('IntersectionObserver' in window) {
     for (const entry of entries) {
       if (!entry.isIntersecting) continue;
       navigation.querySelectorAll('a[href^="#"]').forEach((link) => {
-        if (link.hash === `#${entry.target.id}`) link.setAttribute('aria-current','location');
+        const sectionId = entry.target.dataset.section || entry.target.id;
+        if (link.hash === `#${sectionId}`) link.setAttribute('aria-current','location');
         else link.removeAttribute('aria-current');
       });
+      moveNavIndicator(currentNavLink(), Boolean(currentNavLink()));
     }
-  }, {rootMargin:'-15% 0px -60% 0px'});
-  document.querySelectorAll('main>section[id]').forEach((section) => sectionObserver.observe(section));
+  }, {rootMargin:'-10% 0px -55% 0px'});
+  document.querySelectorAll('main>section[id], .contact-marker').forEach((section) => sectionObserver.observe(section));
+}
+let contactScrollFrame;
+window.addEventListener('scroll', () => {
+  cancelAnimationFrame(contactScrollFrame);
+  contactScrollFrame = requestAnimationFrame(() => {
+    if (scrollY < document.documentElement.scrollHeight - innerHeight - 4) return;
+    const contactLink = navLinks.querySelector('a[href="#contact"]');
+    navLinks.querySelectorAll('a').forEach((link) => {
+      if (link === contactLink) link.setAttribute('aria-current','location');
+      else link.removeAttribute('aria-current');
+    });
+    moveNavIndicator(contactLink);
+  });
+},{passive:true});
+if (location.hash === '#contact' && contactCurtainIsFixed()) {
+  const finishContactReveal = () => requestAnimationFrame(() => scrollTo(0,document.documentElement.scrollHeight));
+  if (document.readyState === 'complete') finishContactReveal();
+  else addEventListener('load',finishContactReveal,{once:true});
 }
 
 const dialogs = new Map([...document.querySelectorAll('dialog[data-case]')].map((dialog) => [dialog.dataset.case,dialog]));
