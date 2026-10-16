@@ -205,28 +205,30 @@ html:not(.js) .tool-copy,.tool-strip.is-paused .tool-copy{display:none}
   .tool-strip .tool-track ul{flex-wrap:wrap;max-width:100%;gap:12px 24px;padding:0}
   .tool-copy,.tools-pause{display:none}
 }
-:root{--spring:587ms linear(0,0.094 5.6%,0.455 16.7%,0.726 27.8%,0.873 38.9%,0.944 50%,0.985 66.7%,1 100%);--curtain-height:max(55vh,min(760px,calc(100vh - 16px)));--footer-bg:#0f766e;--button-text:#fff}
+:root{--spring:587ms linear(0,0.094 5.6%,0.455 16.7%,0.726 27.8%,0.873 38.9%,0.944 50%,0.985 66.7%,1 100%);--header-motion:600ms linear(0,0.094 5.6%,0.455 16.7%,0.726 27.8%,0.873 38.9%,0.944 50%,0.985 66.7%,1 100%);--curtain-height:100dvh;--footer-bg:#0f766e;--button-text:#fff}
 html[data-theme="dark"]{color-scheme:dark;--background:#111715;--foreground:#eff5f0;--muted:#b7c2ba;--accent:#5eead4;--accent-hover:#2dd4bf;--surface:#17201c;--sage:#1b2722;--border:#35453d;--input-border:#718078;--error:#ff9b9b;--focus:#5eead4;--footer-bg:#064e49;--button-text:#09211d}
 .button{color:var(--button-text)}
 body{background:var(--footer-bg)}
 main{position:relative;z-index:1;background:var(--background);border-radius:0 0 24px 24px;box-shadow:0 24px 42px #07120e35;margin-bottom:var(--curtain-height);padding-top:88px;overflow:clip}
 .header-sentinel{position:absolute;top:16px;left:0;width:1px;height:1px;pointer-events:none}
-.site-header{position:fixed;top:0;left:0;right:0;z-index:20;background:transparent;border:0;transition:transform var(--spring),filter var(--spring)}
-.header-background{position:absolute;inset:0;background:var(--background);border-bottom:1px solid var(--border);clip-path:inset(0 0 0 0 round 0);transition:clip-path 600ms linear(0,0.094 5.6%,0.455 16.7%,0.726 27.8%,0.873 38.9%,0.944 50%,0.985 66.7%,1 100%)}
+.site-header{position:fixed;top:0;left:0;right:0;z-index:20;background:transparent;border:0;transition:transform var(--header-motion),filter var(--header-motion)}
+.header-background{position:absolute;inset:0;background:var(--background);border-bottom:1px solid var(--border);clip-path:inset(0 0 0 0 round 0);transition:clip-path var(--header-motion)}
 .header-inner{position:relative;z-index:1;width:min(1200px,76%)}
 .site-header.is-condensed{transform:translateY(5px);filter:drop-shadow(0 12px 14px #12201922)}
 .site-header.is-condensed .header-background{clip-path:inset(0 12% 0 12% round 999px)}
-.site-header .brand,.nav-booking{transition:transform var(--spring),color .18s ease}
+.site-header .brand,.nav-booking{transition:transform var(--header-motion),color .18s ease}
 .site-header.is-condensed .header-inner>.brand{transform:translateX(26px)}
 .site-header.is-condensed .nav-booking{transform:translateX(-26px)}
 .header-controls{order:2;display:flex;align-items:center;gap:6px}
 nav{order:1;margin-left:auto}
 .theme-toggle,.menu-toggle{position:relative;display:grid;place-items:center;width:44px;height:44px;min-width:44px;padding:0;border:1px solid var(--border);border-radius:50%;background:var(--surface);color:var(--foreground);transition:transform 90ms ease,background var(--spring),color var(--spring),border-color var(--spring)}
 .theme-toggle:active,.menu-toggle:active{transform:scale(.94)}
-.theme-icon{position:relative;width:18px;height:18px;border:2px solid currentColor;border-radius:50%;transition:transform var(--spring),box-shadow var(--spring)}
-.theme-icon::after{content:"";position:absolute;inset:-6px;border:2px dotted currentColor;border-radius:50%;transition:transform var(--spring),opacity var(--spring)}
-html[data-theme="dark"] .theme-icon{transform:rotate(-35deg);box-shadow:5px -3px 0 -2px var(--surface)}
-html[data-theme="dark"] .theme-icon::after{transform:scale(.35);opacity:0}
+.theme-icons{position:relative;width:22px;height:22px}
+.theme-icons svg{position:absolute;inset:0;width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform var(--spring),opacity 220ms ease}
+.theme-sun{opacity:1;transform:rotate(0) scale(1)}
+.theme-moon{opacity:0;transform:rotate(-40deg) scale(.55)}
+html[data-theme="dark"] .theme-sun{opacity:0;transform:rotate(50deg) scale(.55)}
+html[data-theme="dark"] .theme-moon{opacity:1;transform:rotate(0) scale(1)}
 .menu-toggle{display:none;border-radius:10px}
 .menu-lines,.menu-lines i{position:absolute;left:50%;top:50%;width:24px;height:2px}
 .menu-lines{transform:translate(-50%,-50%)}
@@ -244,7 +246,7 @@ html[data-theme="dark"] .theme-icon::after{transform:scale(.35);opacity:0}
 .contact-marker{display:block;width:1px;height:1px}
 .curtain-footer{position:fixed;z-index:0;left:0;right:0;bottom:0;height:var(--curtain-height);overflow:auto;background:var(--footer-bg);color:#fff;overscroll-behavior:contain}
 .footer-parallax{min-height:100%;display:flex;flex-direction:column;justify-content:space-between}
-.curtain-footer .contact-section{background:transparent;border:0;padding-block:clamp(38px,6vh,70px) 24px}
+.curtain-footer .contact-section{background:transparent;border:0;padding-block:clamp(124px,16vh,154px) 24px}
 .curtain-footer h2,.curtain-footer h3,.curtain-footer label,.curtain-footer .brand,.curtain-footer .text-link,.curtain-footer .direct-contact a{color:#fff}
 .curtain-footer p,.curtain-footer .eyebrow,.curtain-footer .direct-contact>span,.curtain-footer .form-bottom>span,.curtain-footer .site-footer>p{color:#d9f1ec}
 .curtain-footer .contact-copy h2 span{color:#9ff5e5}
@@ -284,12 +286,14 @@ html[data-theme="dark"] .theme-icon::after{transform:scale(.35);opacity:0}
   .nav-links a{justify-content:flex-start;padding-inline:12px}
   .nav-indicator{display:none}
   .curtain-footer{position:relative;height:auto;overflow:visible}
+  .curtain-footer .contact-section{padding-top:72px}
   .curtain-footer .site-footer{width:calc(100% - 40px)}
 }
 @media(prefers-reduced-motion:reduce){
-  .site-header,.header-background,.site-header .brand,.nav-booking,.nav-indicator,.theme-icon,.theme-icon::after,.menu-lines i{transition:none!important}
+  .site-header,.header-background,.site-header .brand,.nav-booking,.nav-indicator,.theme-icons svg,.menu-lines i{transition:none!important}
   main{margin-bottom:0;border-radius:0;box-shadow:none}
   .curtain-footer{position:relative;height:auto;overflow:visible}
+  .curtain-footer .contact-section{padding-top:var(--space-section)}
   .footer-parallax{transform:none!important;animation:none!important}
 }
 @media print{.site-header,.hero-actions,form,.dialog-toolbar,.more-projects,dialog,.theme-toggle{display:none}.wrap{width:100%}.section{padding-block:24px}body{font-size:12px;background:#fff}.project,.about-section{break-inside:avoid}main{margin:0;padding:0;box-shadow:none}.curtain-footer{position:static;height:auto;overflow:visible;color:#000;background:#fff}}

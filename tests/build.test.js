@@ -24,11 +24,13 @@ test('build preserves all projects, local assets and legacy routes', () => {
   assert.ok(!html.includes('cdn.tailwindcss.com'));
   assert.ok(!html.includes('<!-- FEATURED_PROJECTS -->'));
   assert.ok(html.includes('RC automation'));
-  assert.ok(html.includes('AI workflow automation engineer'));
+  assert.ok(html.includes('AI Workflow Automation Engineer'));
   assert.ok(html.includes('01 / PROJECTS'));
   assert.ok(html.includes('class="header-background"'));
   assert.ok(html.includes('class="nav-indicator"'));
   assert.ok(html.includes('class="theme-toggle"'));
+  assert.ok(html.includes('class="theme-sun"'));
+  assert.ok(html.includes('class="theme-moon"'));
   assert.ok(html.includes('class="menu-lines"'));
   assert.ok(html.includes('class="curtain-footer"'));
   assert.ok(html.includes('id="contact" class="contact-marker"'));
