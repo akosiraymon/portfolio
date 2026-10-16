@@ -45,6 +45,10 @@ function projectDialog(project) {
 }
 export function build() {
   mkdirSync(output, {recursive:true});
+  const vendor = join(output,'vendor');
+  mkdirSync(vendor,{recursive:true});
+  cpSync(join(root,'node_modules/gsap/dist/gsap.min.js'),join(vendor,'gsap.min.js'));
+  cpSync(join(root,'node_modules/gsap/dist/ScrollTrigger.min.js'),join(vendor,'ScrollTrigger.min.js'));
   const featured = featuredIds.map((id) => PROJECTS.find((project) => project.id === id));
   const remaining = PROJECTS.filter((project) => !featuredIds.includes(project.id));
   let html = readFileSync(join(root,'index.html'),'utf8');

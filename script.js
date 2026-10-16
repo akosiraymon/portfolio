@@ -6,12 +6,15 @@ const headerSentinel = document.querySelector('.header-sentinel');
 new IntersectionObserver(([entry]) => siteHeader.classList.toggle('is-condensed', !entry.isIntersecting)).observe(headerSentinel);
 
 const themeToggle = document.querySelector('.theme-toggle');
+const themeFooter = document.querySelector('.theme-footer');
 const themeColor = document.querySelector('meta[name="theme-color"]');
 function syncThemeButton() {
   const dark = document.documentElement.dataset.theme === 'dark';
-  themeToggle.setAttribute('aria-pressed', String(dark));
+  themeToggle.setAttribute('aria-checked', String(dark));
   themeToggle.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+  themeFooter.classList.toggle('is-dark', dark);
   themeColor.content = dark ? '#111715' : '#F7F6F2';
+  dispatchEvent(new Event('themechange'));
 }
 syncThemeButton();
 themeToggle.addEventListener('click', () => {
@@ -54,8 +57,6 @@ const navigation = document.querySelector('#primary-nav');
 const navLinks = document.querySelector('.nav-links');
 const navIndicator = document.querySelector('.nav-indicator');
 const indicatorBaseWidth = 48;
-const curtainFooter = document.querySelector('.curtain-footer');
-const contactCurtainIsFixed = () => getComputedStyle(curtainFooter).position === 'fixed';
 function currentNavLink() {
   return navLinks.querySelector('a[aria-current="location"]');
 }
@@ -95,11 +96,6 @@ navigation.addEventListener('click', (event) => {
   const link = event.target.closest('a');
   if (link) {
     if (link.hash && link.origin === location.origin) {
-      if (link.hash === '#contact' && contactCurtainIsFixed()) {
-        event.preventDefault();
-        if (location.hash !== '#contact') history.pushState(null,'','#contact');
-        scrollTo({top:document.documentElement.scrollHeight,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
-      }
       navLinks.querySelectorAll('a').forEach((item) => {
         if (item === link) item.setAttribute('aria-current','location');
         else item.removeAttribute('aria-current');
@@ -128,25 +124,202 @@ if ('IntersectionObserver' in window) {
       moveNavIndicator(currentNavLink(), Boolean(currentNavLink()));
     }
   }, {rootMargin:'-10% 0px -55% 0px'});
-  document.querySelectorAll('main>section[id], .contact-marker').forEach((section) => sectionObserver.observe(section));
+  document.querySelectorAll('main>section[id]').forEach((section) => sectionObserver.observe(section));
 }
-let contactScrollFrame;
-window.addEventListener('scroll', () => {
-  cancelAnimationFrame(contactScrollFrame);
-  contactScrollFrame = requestAnimationFrame(() => {
-    if (scrollY < document.documentElement.scrollHeight - innerHeight - 4) return;
-    const contactLink = navLinks.querySelector('a[href="#contact"]');
-    navLinks.querySelectorAll('a').forEach((link) => {
-      if (link === contactLink) link.setAttribute('aria-current','location');
-      else link.removeAttribute('aria-current');
-    });
-    moveNavIndicator(contactLink);
+
+const backToTop = document.querySelector('.back-to-top');
+const backTopSentinel = document.querySelector('.back-top-sentinel');
+if ('IntersectionObserver' in window) {
+  new IntersectionObserver(([entry]) => {
+    backToTop.classList.toggle('is-visible', !entry.isIntersecting && entry.boundingClientRect.top < 0);
+  }).observe(backTopSentinel);
+}
+backToTop.addEventListener('click', () => {
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const pageTop = document.querySelector('#top');
+  backToTop.classList.add('is-traveling');
+  scrollTo({top:0,behavior:reduced ? 'auto' : 'smooth'});
+  if (reduced) {
+    backToTop.classList.remove('is-traveling');
+    pageTop.focus({preventScroll:true});
+    return;
+  }
+  const started = performance.now();
+  const finish = () => {
+    if (scrollY > 2 && performance.now() - started < 1600) {
+      requestAnimationFrame(finish);
+      return;
+    }
+    backToTop.classList.remove('is-traveling');
+    pageTop.focus({preventScroll:true});
+  };
+  requestAnimationFrame(finish);
+});
+
+const canvas = document.querySelector('.constellation-canvas');
+const context = canvas.getContext('2d');
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+let constellationNodes = [];
+let constellationFrame;
+let previousFrame = performance.now();
+let pointerNode = null;
+let canvasWidth = 0;
+let canvasHeight = 0;
+let constellationColor = [15,118,110];
+function accentRgb() {
+  const value = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+  const hex = value.replace('#','');
+  const normalized = hex.length === 3 ? [...hex].map((character) => character + character).join('') : hex;
+  return [0,2,4].map((offset) => Number.parseInt(normalized.slice(offset,offset + 2),16));
+}
+function seedConstellation() {
+  const smallScreen = canvasWidth < 700;
+  const count = Math.min(smallScreen ? 36 : 58, Math.max(35,Math.round(canvasWidth * canvasHeight / 25000)));
+  constellationNodes = Array.from({length:count}, () => {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 4 + Math.random() * 8;
+    return {x:Math.random() * canvasWidth,y:Math.random() * canvasHeight,vx:Math.cos(angle) * speed,vy:Math.sin(angle) * speed};
   });
-},{passive:true});
-if (location.hash === '#contact' && contactCurtainIsFixed()) {
-  const finishContactReveal = () => requestAnimationFrame(() => scrollTo(0,document.documentElement.scrollHeight));
-  if (document.readyState === 'complete') finishContactReveal();
-  else addEventListener('load',finishContactReveal,{once:true});
+}
+function sizeConstellation() {
+  const ratio = Math.min(devicePixelRatio || 1,2);
+  canvasWidth = canvas.clientWidth;
+  canvasHeight = canvas.clientHeight;
+  canvas.width = Math.round(canvasWidth * ratio);
+  canvas.height = Math.round(canvasHeight * ratio);
+  context.setTransform(ratio,0,0,ratio,0,0);
+  seedConstellation();
+  drawConstellation(0);
+}
+function drawConstellation(delta) {
+  context.clearRect(0,0,canvasWidth,canvasHeight);
+  const [red,green,blue] = constellationColor;
+  const reach = Math.min(canvasWidth,canvasHeight) * .3;
+  for (const node of constellationNodes) {
+    node.x += node.vx * delta;
+    node.y += node.vy * delta;
+    if (node.x <= 0 || node.x >= canvasWidth) {
+      node.vx *= -1;
+      node.x = Math.max(0,Math.min(canvasWidth,node.x));
+    }
+    if (node.y <= 0 || node.y >= canvasHeight) {
+      node.vy *= -1;
+      node.y = Math.max(0,Math.min(canvasHeight,node.y));
+    }
+  }
+  const allNodes = pointerNode ? [...constellationNodes,pointerNode] : constellationNodes;
+  for (let first = 0; first < allNodes.length; first += 1) {
+    for (let second = first + 1; second < allNodes.length; second += 1) {
+      const horizontal = allNodes[first].x - allNodes[second].x;
+      const vertical = allNodes[first].y - allNodes[second].y;
+      const distance = Math.hypot(horizontal,vertical);
+      if (distance >= reach) continue;
+      const strength = (1 - distance / reach) * .4;
+      context.strokeStyle = `rgba(${red},${green},${blue},${strength})`;
+      context.lineWidth = 1;
+      context.beginPath();
+      context.moveTo(allNodes[first].x,allNodes[first].y);
+      context.lineTo(allNodes[second].x,allNodes[second].y);
+      context.stroke();
+    }
+  }
+  context.fillStyle = `rgba(${red},${green},${blue},.72)`;
+  for (const node of constellationNodes) {
+    context.beginPath();
+    context.arc(node.x,node.y,2,0,Math.PI * 2);
+    context.fill();
+  }
+}
+function animateConstellation(now) {
+  const delta = Math.min((now - previousFrame) / 1000,.04);
+  previousFrame = now;
+  drawConstellation(delta);
+  constellationFrame = requestAnimationFrame(animateConstellation);
+}
+function syncConstellationMotion() {
+  cancelAnimationFrame(constellationFrame);
+  previousFrame = performance.now();
+  if (reducedMotion.matches) drawConstellation(0);
+  else constellationFrame = requestAnimationFrame(animateConstellation);
+}
+addEventListener('resize',sizeConstellation,{passive:true});
+addEventListener('pointermove',(event) => {pointerNode = {x:event.clientX,y:event.clientY,vx:0,vy:0};},{passive:true});
+document.documentElement.addEventListener('pointerleave',() => {pointerNode = null;});
+addEventListener('themechange',() => {
+  constellationColor = accentRgb();
+  drawConstellation(0);
+});
+reducedMotion.addEventListener('change',syncConstellationMotion);
+constellationColor = accentRgb();
+sizeConstellation();
+syncConstellationMotion();
+
+const zoomSection = document.querySelector('.project-zoom');
+if (window.gsap && window.ScrollTrigger && zoomSection) {
+  window.gsap.registerPlugin(window.ScrollTrigger);
+  let zoomMediaQuery;
+  const zoomContext = window.gsap.context(() => {
+    const media = zoomSection.querySelector('.zoom-media');
+    const overlayTitle = zoomSection.querySelector('.zoom-overlay-title');
+    zoomMediaQuery = window.gsap.matchMedia();
+    zoomMediaQuery.add('(prefers-reduced-motion: no-preference)',() => {
+      window.gsap.timeline({
+        defaults:{ease:'power2.inOut'},
+        scrollTrigger:{trigger:zoomSection,start:'top top',end:() => `+=${innerHeight * 1.5}`,pin:true,scrub:.5,invalidateOnRefresh:true},
+      })
+        .to(media,{scale:.6,borderRadius:44,duration:1},0)
+        .to(overlayTitle,{autoAlpha:0,y:-24,duration:.4},0);
+    });
+    zoomMediaQuery.add('(prefers-reduced-motion: reduce)',() => {
+      window.gsap.set(media,{scale:.6,borderRadius:44});
+      window.gsap.set(overlayTitle,{autoAlpha:0,y:-24});
+    });
+  },zoomSection);
+  addEventListener('pagehide',() => {
+    zoomMediaQuery?.revert();
+    zoomContext.revert();
+  },{once:true});
+}
+
+const projectCursor = document.querySelector('.project-cursor');
+const cursorEnabled = matchMedia('(pointer: fine) and (prefers-reduced-motion: no-preference)');
+if (projectCursor && cursorEnabled.matches) {
+  document.body.classList.add('cursor-enhanced');
+  const cursorZones = document.querySelectorAll('.project-zoom,.featured-projects,.project-list');
+  const cursorCards = document.querySelectorAll('[data-cursor="view"],.featured-projects .project,.project-list-item');
+  cursorZones.forEach((zone) => {
+    zone.addEventListener('pointerenter',() => projectCursor.classList.add('is-active'));
+    zone.addEventListener('pointermove',(event) => {
+      projectCursor.style.transform = `translate3d(${event.clientX}px,${event.clientY}px,0)`;
+    });
+    zone.addEventListener('pointerleave',() => {
+      projectCursor.classList.remove('is-active','is-view');
+    });
+  });
+  cursorCards.forEach((card) => {
+    card.addEventListener('pointerenter',() => projectCursor.classList.add('is-view'));
+    card.addEventListener('pointerleave',() => projectCursor.classList.remove('is-view'));
+  });
+}
+
+const footerBrands = document.querySelectorAll('.footer-theme-layer .site-footer .brand');
+const footerBrandMotion = matchMedia('(pointer: fine) and (prefers-reduced-motion: no-preference)');
+if (footerBrands.length && footerBrandMotion.matches) {
+  let footerBrandFrame;
+  addEventListener('pointermove',(event) => {
+    cancelAnimationFrame(footerBrandFrame);
+    footerBrandFrame = requestAnimationFrame(() => {
+      footerBrands.forEach((brand) => {
+        const bounds = brand.getBoundingClientRect();
+        const distance = Math.hypot(event.clientX - (bounds.left + bounds.width / 2),event.clientY - (bounds.top + bounds.height / 2));
+        const proximity = Math.max(0,1 - distance / 180);
+        brand.style.setProperty('--footer-brand-scale',String(1 + proximity * .18));
+      });
+    });
+  },{passive:true});
+  document.documentElement.addEventListener('pointerleave',() => {
+    footerBrands.forEach((brand) => brand.style.removeProperty('--footer-brand-scale'));
+  });
 }
 
 const dialogs = new Map([...document.querySelectorAll('dialog[data-case]')].map((dialog) => [dialog.dataset.case,dialog]));

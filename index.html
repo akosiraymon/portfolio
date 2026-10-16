@@ -19,21 +19,24 @@
   <link rel="preload" href="/assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/style.css">
+  <script src="/vendor/gsap.min.js" defer></script>
+  <script src="/vendor/ScrollTrigger.min.js" defer></script>
   <script src="/script.js" type="module"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
+  <canvas class="constellation-canvas" aria-hidden="true"></canvas>
   <span class="header-sentinel" aria-hidden="true"></span>
   <header class="site-header">
     <div class="header-background" aria-hidden="true"></div>
     <div class="wrap header-inner">
-      <a class="brand" href="#top" aria-label="RC automation, back to top">RC automation<span class="brand-mark" aria-hidden="true">↗</span></a>
+      <a class="brand" href="#top" aria-label="RCA, back to top">RCA<span class="brand-mark" aria-hidden="true">↗</span></a>
       <div class="header-controls">
-        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark theme">
-          <span class="theme-icons" aria-hidden="true">
+        <button class="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Switch to dark theme">
+          <span class="toggle-track" aria-hidden="true"><span class="toggle-thumb">
             <svg class="theme-sun" viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="3.5"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"></path></svg>
             <svg class="theme-moon" viewBox="0 0 24 24" focusable="false"><path d="M20.5 15.1A8.5 8.5 0 0 1 8.9 3.5a8.5 8.5 0 1 0 11.6 11.6Z"></path></svg>
-          </span>
+          </span></span>
         </button>
         <button class="menu-toggle" aria-controls="primary-nav" aria-expanded="false" aria-label="Open menu" type="button"><span class="menu-lines" aria-hidden="true"><i></i><i></i><i></i></span></button>
       </div>
@@ -44,7 +47,7 @@
     </div>
   </header>
   <main id="main">
-    <section id="top" class="hero wrap" aria-labelledby="hero-title">
+    <section id="top" class="hero wrap" aria-labelledby="hero-title" tabindex="-1">
       <div class="hero-copy">
         <p class="eyebrow"><span class="small-rule" aria-hidden="true"></span> RAYMON CASTANO · AUTOMATION SPECIALIST</p>
         <h1 id="hero-title">I automate the<br class="desktop-break"> busywork behind<br class="desktop-break"> <span>your business.</span></h1>
@@ -58,8 +61,16 @@
         <figcaption><div><strong>Hi, I’m Raymon.</strong><span>AI Workflow Automation Engineer</span></div><span class="portrait-location">Manila, PH</span></figcaption>
       </figure>
     </section>
+    <span class="back-top-sentinel" aria-hidden="true"></span>
     <div class="tool-strip wrap"><p>GOOD SYSTEMS START<br> WITH CONNECTED TOOLS</p><div class="tool-window"><div class="tool-track"><!-- PROJECT_TOOLS --></div></div><button class="tools-pause" type="button" aria-pressed="false" hidden>Pause tools</button></div>
-    <section id="work" class="section wrap" aria-labelledby="work-title">
+    <section id="work" class="project-zoom" aria-label="Featured project">
+      <a class="zoom-media" href="#case-ai-lead-qualification-crm" data-project="ai-lead-qualification-crm" data-cursor="view" aria-label="View case study: AI-Powered Lead Qualification and CRM Follow-Up System">
+        <img src="/assets/optimized/ai-lead-qualification-overview-1200.webp" srcset="/assets/optimized/ai-lead-qualification-overview-640.webp 640w, /assets/optimized/ai-lead-qualification-overview-1200.webp 1200w" sizes="100vw" alt="AI-powered lead qualification and CRM follow-up workflow" width="1200" height="600" loading="lazy" decoding="async">
+        <span class="zoom-media-wash" aria-hidden="true"></span>
+        <span class="zoom-overlay-title">AI-powered lead qualification<br>and CRM follow-up.</span>
+      </a>
+    </section>
+    <section class="section wrap work-listing" aria-labelledby="work-title">
       <div class="section-heading"><div><p class="eyebrow">01 / PROJECTS</p><h2 id="work-title">Real problems.<br><span>Connected solutions.</span></h2></div><p>Independent portfolio systems I designed and built around real business scenarios. Here’s how the pieces come together.</p></div>
       <div class="featured-projects"><!-- FEATURED_PROJECTS --></div>
       <details class="more-projects"><summary><span>More systems I’ve built <span class="project-count">07</span></span><span class="expand-label" aria-hidden="true">Explore <span>+</span></span></summary><div class="project-list"><!-- MORE_PROJECTS --></div></details>
@@ -77,10 +88,7 @@
       <div class="about-intro"><p class="eyebrow">03 / THE WAY I WORK</p><h2 id="about-title">Thoughtful systems.<br><span>A human approach.</span></h2><p>I’m Raymon, a freelance automation specialist based in Manila. I connect business tools so information moves without anyone having to re-type it.</p><p>Most of my work is in n8n, Make, and Zapier, with a growing focus on AI agents, voice receptionists, and conversational support. My aim is practical: clear inputs, dependable logic, and a workflow your team can understand.</p><a class="text-link" href="https://linkedin.com/in/RAcastano" target="_blank" rel="noopener noreferrer">A little more about me on LinkedIn <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a><ul class="capabilities" aria-label="Technical capabilities"><li>REST APIs</li><li>Webhooks</li><li>AI agents</li><li>Voice AI</li></ul></div>
       <ol class="process-list"><li><span class="process-index">01</span><div><h3>Understand the handoffs.</h3><p>Find where information starts, who needs it, and which manual steps cause delays or mistakes.</p></div></li><li><span class="process-index">02</span><div><h3>Build for the real process.</h3><p>Connect the tools already in use. Keep the logic clear enough for your team to follow and maintain.</p></div></li><li><span class="process-index">03</span><div><h3>Test beyond the happy path.</h3><p>Check incomplete inputs, duplicates, API failures, and timeouts—then make recovery part of the workflow.</p></div></li></ol>
     </section>
-    <span id="contact" class="contact-marker" data-section="contact" aria-hidden="true"></span>
-  </main>
-  <footer class="curtain-footer" aria-labelledby="contact-title"><div class="footer-parallax">
-    <section class="contact-section section"><div class="wrap contact-grid">
+    <section id="contact" class="contact-section section" aria-labelledby="contact-title"><div class="wrap contact-grid">
       <div class="contact-copy"><p class="eyebrow">04 / LET’S CONNECT</p><h2 id="contact-title">What’s taking up<br>too much of<br><span>your time?</span></h2><p>Bring the repetitive task, the messy handoff, or the process you wish worked better. Let’s map it together.</p><a class="button" href="https://calendly.com/castanoraymon/discovery-call" target="_blank" rel="noopener noreferrer">Book a discovery call <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a><div class="direct-contact"><span>Prefer email?</span><a href="mailto:castanoraymon@gmail.com">castanoraymon@gmail.com <span aria-hidden="true">↗</span></a></div></div>
       <form id="contact-form" novalidate><h3>Or tell me about your project.</h3><p class="form-intro">A few details are a good place to start. <span>Required fields are marked *.</span></p><p id="local-preview-note" class="preview-note" hidden>Local preview: messages are simulated and are not sent.</p><div id="error-summary" class="error-summary" tabindex="-1" hidden></div>
         <div class="field-row"><div class="field"><label for="cf-name">Your name *</label><input id="cf-name" name="name" autocomplete="name" maxlength="120" required aria-describedby="error-name"><span id="error-name" class="field-error"></span></div><div class="field"><label for="cf-email">Email address *</label><input id="cf-email" name="email" type="email" autocomplete="email" maxlength="254" required aria-describedby="error-email"><span id="error-email" class="field-error"></span></div></div>
@@ -91,8 +99,19 @@
         <noscript><p>Please <a href="mailto:castanoraymon@gmail.com">email me directly</a> to send your project details.</p></noscript>
       </form>
     </div></section>
-    <div class="wrap site-footer"><a class="brand" href="#top" aria-label="Raymon Castano, back to top">raymon<span class="brand-mark" aria-hidden="true">↗</span></a><p>© <!-- YEAR --> Raymon Castano<br><span>Thoughtfully connected. Purposefully built.</span></p><a class="text-link" href="#top">Back to top <span aria-hidden="true">↑</span></a></div>
-  </div></footer>
+  </main>
+  <footer class="theme-footer" aria-label="Site footer">
+    <div class="footer-theme-layers">
+      <div class="footer-theme-layer footer-theme-light">
+        <div class="wrap site-footer"><a class="brand" href="#top" aria-label="Raymon Castano, back to top">Raymon.<span class="brand-mark" aria-hidden="true">↗</span></a><p>© <!-- YEAR --> Raymon Castano<br><span>Thoughtfully connected. Purposefully built.</span></p><a class="text-link" href="#top">Back to top <span aria-hidden="true">↑</span></a></div>
+      </div>
+      <div class="footer-theme-layer footer-theme-dark" aria-hidden="true" inert>
+        <div class="wrap site-footer"><span class="brand">Raymon.<span class="brand-mark">↗</span></span><p>© <!-- YEAR --> Raymon Castano<br><span>Thoughtfully connected. Purposefully built.</span></p><span class="text-link">Back to top <span>↑</span></span></div>
+      </div>
+    </div>
+  </footer>
+  <button class="back-to-top" type="button" aria-label="Back to top"><span aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 19V5M6 11l6-6 6 6"></path></svg></span></button>
+  <div class="project-cursor" aria-hidden="true"><span class="cursor-dot"></span><span class="cursor-pill">View <svg viewBox="0 0 16 16" focusable="false"><path d="M4 12 12 4M6 4h6v6"></path></svg></span></div>
   <!-- PROJECT_DIALOGS -->
   <noscript><section class="wrap section"><h2>Project case studies</h2><!-- PROJECT_FALLBACKS --></section></noscript>
 </body>
